@@ -1,0 +1,495 @@
+@page "/app/farmacia"
+@model CaveroSalud.Api.Pages.App.FarmaciaModel
+@{
+  ViewData["Title"] = "Panel farmacia";
+}
+
+<div class="container py-5">
+  @if (!string.IsNullOrWhiteSpace(Model.SuccessMessage))
+  {
+    <div class="alert alert-success" role="alert">@Model.SuccessMessage</div>
+  }
+  @if (!string.IsNullOrWhiteSpace(Model.ErrorMessage))
+  {
+    <div class="alert alert-danger" role="alert">@Model.ErrorMessage</div>
+  }
+  @if (!string.IsNullOrWhiteSpace(Model.NotificationDetailTitle))
+  {
+    <div class="alert alert-info" role="alert">
+      <div class="fw-semibold">@Model.NotificationDetailTitle</div>
+      <div>@Model.NotificationDetailBody</div>
+    </div>
+  }
+
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+      <h1 class="h3 mb-0">Farmacia</h1>
+      <div class="small text-muted">Panel de control del farmacéutico</div>
+    </div>
+    <div class="text-end d-flex align-items-center gap-2">
+      <button class="btn btn-outline-primary btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#notificacionesFarmacia" aria-expanded="false" title="Notificaciones">
+        <i class="fa-regular fa-bell"></i>
+      </button>
+      <button class="btn btn-outline-secondary btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#cuentaFarmacia" aria-expanded="false" title="Mi cuenta">
+        <i class="fa-regular fa-user"></i>
+      </button>
+      <div>
+      <div class="fw-semibold">@Model.UserFullName</div>
+      <small class="text-muted">Farmacéutico</small>
+      </div>
+    </div>
+  </div>
+
+  <div id="notificacionesFarmacia" class="collapse mb-4">
+    <div class="card shadow-sm h-100">
+      <div class="card-body">
+        <h6 class="mb-3">Notificaciones</h6>
+        <ul class="list-group list-group-flush">
+          @foreach (var n in Model.Notifications)
+          {
+            <li class="list-group-item d-flex justify-content-between align-items-start">
+              <div>
+                <div class="fw-semibold">@n.Message</div>
+                <div class="small text-muted">@n.When</div>
+              </div>
+              <div class="d-flex align-items-center gap-2">
+                @if (n.Id.HasValue)
+                {
+                  <form method="post" asp-page-handler="ViewNotification" class="d-inline">
+                    <input type="hidden" name="id" value="@n.Id" />
+                    <button type="submit" class="btn btn-sm @(n.IsRead ? "btn-outline-secondary" : "btn-outline-primary")">Ver detalle</button>
+                  </form>
+                }
+                <span class="badge @(n.Type == "warning" ? "text-bg-warning" : n.Type == "success" ? "text-bg-success" : "text-bg-primary")">@n.Type</span>
+              </div>
+            </li>
+          }
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div id="cuentaFarmacia" class="collapse mb-4">
+    <div class="card shadow-sm h-100">
+      <div class="card-body">
+        <h6 class="mb-3">Gestionar mi cuenta</h6>
+        <form method="post" asp-page-handler="UpdateAccount" class="vstack gap-2">
+          <div>
+            <label asp-for="Account.FullName" class="form-label">Nombre completo</label>
+            <input asp-for="Account.FullName" class="form-control" />
+          </div>
+          <div>
+            <label asp-for="Account.Email" class="form-label">Correo</label>
+            <input asp-for="Account.Email" type="email" class="form-control" />
+          </div>
+          <div>
+            <label asp-for="Account.Phone" class="form-label">Teléfono</label>
+            <input asp-for="Account.Phone" class="form-control" />
+          </div>
+          <div>
+            <label asp-for="Account.Dni" class="form-label">DNI</label>
+            <input asp-for="Account.Dni" class="form-control" />
+          </div>
+          <button type="submit" class="btn btn-outline-primary">Guardar cambios</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div class="row g-3 mb-4">
+    <div class="col-sm-6 col-md-3">
+      <div class="card shadow-sm p-3 h-100">
+        <div class="small text-muted">Pedidos pendientes</div>
+        <div class="h4 mt-2">@Model.Stats.PendingOrders</div>
+      </div>
+    </div>
+    <div class="col-sm-6 col-md-3">
+      <div class="card shadow-sm p-3 h-100">
+        <div class="small text-muted">Stock crítico</div>
+        <div class="h4 mt-2 text-danger">@Model.Stats.CriticalStock</div>
+      </div>
+    </div>
+    <div class="col-sm-6 col-md-3">
+      <div class="card shadow-sm p-3 h-100">
+        <div class="small text-muted">Despachos hoy</div>
+        <div class="h4 mt-2">@Model.Stats.Shipped</div>
+      </div>
+    </div>
+    <div class="col-sm-6 col-md-3">
+      <div class="card shadow-sm p-3 h-100">
+        <div class="small text-muted">Acciones</div>
+        <div class="mt-2 d-flex gap-2">
+          <a class="btn btn-sm btn-primary" href="/app/farmacia/pedidos">Ver pedidos</a>
+          <a class="btn btn-sm btn-outline-secondary" href="/app/farmacia/inventario">Inventario</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card shadow-sm">
+    <div class="card-body">
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <h6 class="mb-0">Solicitudes recientes</h6>
+        <div class="d-flex gap-2">
+          <label for="searchRequests" class="visually-hidden">Buscar paciente o medicamento</label>
+          <input id="searchRequests" class="form-control form-control-sm" placeholder="Buscar paciente o medicamento" />
+          <button id="exportRequests" type="button" class="btn btn-sm btn-outline-secondary">Exportar CSV</button>
+        </div>
+      </div>
+
+      <div class="table-responsive">
+        <table id="requestsTable" class="table table-hover align-middle">
+          <thead class="table-light">
+            <tr>
+              <th>
+                <button type="button" class="btn btn-link btn-sm p-0 text-decoration-none sort-btn" data-sort-key="medicine">
+                  Medicamento
+                </button>
+              </th>
+              <th>
+                <button type="button" class="btn btn-link btn-sm p-0 text-decoration-none sort-btn" data-sort-key="dosage">
+                  Dosis
+                </button>
+              </th>
+              <th>
+                <button type="button" class="btn btn-link btn-sm p-0 text-decoration-none sort-btn" data-sort-key="quantity">
+                  Cantidad
+                </button>
+              </th>
+              <th>
+                <button type="button" class="btn btn-link btn-sm p-0 text-decoration-none sort-btn" data-sort-key="patient">
+                  Paciente
+                </button>
+              </th>
+              <th>
+                <button type="button" class="btn btn-link btn-sm p-0 text-decoration-none sort-btn" data-sort-key="when">
+                  Hora
+                </button>
+              </th>
+              <th>
+                <button type="button" class="btn btn-link btn-sm p-0 text-decoration-none sort-btn" data-sort-key="status">
+                  Estado
+                </button>
+              </th>
+              <th class="text-end">Acciones</th>
+            </tr>
+          </thead>
+          <tbody id="requestsBody">
+            @foreach(var r in Model.RecentRequests) {
+              <tr class="request-row">
+                <td class="fw-semibold">@r.Medicine</td>
+                <td class="text-muted">@r.Dosage</td>
+                <td class="text-muted">@r.Quantity</td>
+                <td class="text-muted">@r.Patient</td>
+                <td class="text-muted">@r.When</td>
+                <td>
+                  @if (r.IsDelivered)
+                  {
+                    <span class="badge bg-success">Entregado</span>
+                  }
+                  else
+                  {
+                    <span class="badge bg-warning text-dark">Pendiente</span>
+                  }
+                </td>
+                <td class="text-end">
+                  <a class="btn btn-sm btn-outline-primary" asp-page="/app/FarmaciaReceta" asp-route-prescriptionId="@r.PrescriptionId">Ver</a>
+                  @if (r.IsDelivered)
+                  {
+                    <button type="button" class="btn btn-sm btn-secondary ms-2" disabled>Entregado</button>
+                  }
+                  else
+                  {
+                    <button
+                      type="button"
+                      class="btn btn-sm btn-success ms-2"
+                      data-bs-toggle="modal"
+                      data-bs-target="#deliverModal"
+                      data-prescription-id="@r.PrescriptionId"
+                      data-patient="@r.Patient"
+                      data-medicine="@r.Medicine"
+                      data-dosage="@r.Dosage"
+                      data-quantity="@r.Quantity">
+                      Despachar
+                    </button>
+                  }
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+
+      <div class="d-flex justify-content-between align-items-center mt-3">
+        <small id="requestsMeta" class="text-muted">0 resultados</small>
+        <div class="d-flex align-items-center gap-2">
+          <label for="pageSizeSelect" class="small text-muted mb-0">Filas</label>
+          <select id="pageSizeSelect" class="form-select form-select-sm" style="width: auto;">
+            <option value="10">10</option>
+            <option value="25">25</option>
+            <option value="50">50</option>
+          </select>
+          <button id="prevPage" type="button" class="btn btn-sm btn-outline-secondary">Anterior</button>
+          <small id="pageInfo" class="text-muted">Página 1 de 1</small>
+          <button id="nextPage" type="button" class="btn btn-sm btn-outline-secondary">Siguiente</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="modal fade" id="deliverModal" tabindex="-1" aria-labelledby="deliverModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="deliverModalLabel">Confirmar despacho</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+      </div>
+      <form method="post" asp-page-handler="Deliver">
+        @Html.AntiForgeryToken()
+        <div class="modal-body">
+          <input type="hidden" id="deliverPrescriptionId" name="prescriptionId" />
+
+          <p class="mb-2">Vas a registrar la entrega de esta receta:</p>
+          <ul class="small text-muted mb-3">
+            <li><strong>Paciente:</strong> <span id="deliverPatient">-</span></li>
+            <li><strong>Medicamento:</strong> <span id="deliverMedicine">-</span></li>
+            <li><strong>Dosis:</strong> <span id="deliverDosage">-</span></li>
+            <li><strong>Cantidad:</strong> <span id="deliverQuantity">-</span></li>
+          </ul>
+
+          <label for="deliveryNotes" class="form-label">Notas de entrega (opcional)</label>
+          <textarea id="deliveryNotes" name="deliveryNotes" class="form-control" rows="3" placeholder="Ejemplo: entrega parcial autorizada, observaciones del paciente, etc."></textarea>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button type="submit" class="btn btn-success">Confirmar despacho</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+@section Scripts {
+  <script>
+    (() => {
+      const searchInput = document.getElementById('searchRequests');
+      const exportButton = document.getElementById('exportRequests');
+      const sortButtons = Array.from(document.querySelectorAll('.sort-btn'));
+      const prevPageButton = document.getElementById('prevPage');
+      const nextPageButton = document.getElementById('nextPage');
+      const pageInfo = document.getElementById('pageInfo');
+      const requestsMeta = document.getElementById('requestsMeta');
+      const pageSizeSelect = document.getElementById('pageSizeSelect');
+      const rows = Array.from(document.querySelectorAll('#requestsBody .request-row'));
+
+      const storageKeyPrefix = 'farmacia.table';
+      const readStorage = (key) => {
+        try {
+          return window.localStorage.getItem(`${storageKeyPrefix}.${key}`);
+        } catch {
+          return null;
+        }
+      };
+      const writeStorage = (key, value) => {
+        try {
+          window.localStorage.setItem(`${storageKeyPrefix}.${key}`, value);
+        } catch {
+          // Ignore storage errors (private mode/blocked storage).
+        }
+      };
+
+      let currentPage = 1;
+      let pageSize = Number(readStorage('pageSize')) || 10;
+      if (![10, 25, 50].includes(pageSize)) {
+        pageSize = 10;
+      }
+      let sortKey = readStorage('sortKey') || 'when';
+      let sortDirection = readStorage('sortDirection') || 'desc';
+      if (!['asc', 'desc'].includes(sortDirection)) {
+        sortDirection = 'desc';
+      }
+      let filteredRows = [...rows];
+
+      if (pageSizeSelect) {
+        pageSizeSelect.value = String(pageSize);
+      }
+
+      const getSortValue = (row, key) => {
+        const cells = row.querySelectorAll('td');
+        if (!cells.length) return '';
+
+        switch (key) {
+          case 'medicine': return cells[0]?.innerText.trim().toLowerCase() || '';
+          case 'dosage': return cells[1]?.innerText.trim().toLowerCase() || '';
+          case 'quantity': return Number(cells[2]?.innerText.trim()) || 0;
+          case 'patient': return cells[3]?.innerText.trim().toLowerCase() || '';
+          case 'when': return cells[4]?.innerText.trim().toLowerCase() || '';
+          case 'status': return cells[5]?.innerText.trim().toLowerCase() || '';
+          default: return '';
+        }
+      };
+
+      const updateSortButtons = () => {
+        sortButtons.forEach((button) => {
+          const key = button.getAttribute('data-sort-key');
+          if (key === sortKey) {
+            const arrow = sortDirection === 'asc' ? ' ↑' : ' ↓';
+            button.textContent = `${button.textContent.replace(/[↑↓]/g, '').trim()}${arrow}`;
+          } else {
+            button.textContent = button.textContent.replace(/[↑↓]/g, '').trim();
+          }
+        });
+      };
+
+      const applyTableState = () => {
+        const term = (searchInput?.value || '').trim().toLowerCase();
+
+        filteredRows = rows.filter((row) => {
+          const text = (row.textContent || '').toLowerCase();
+          return !term || text.includes(term);
+        });
+
+        filteredRows.sort((a, b) => {
+          const valueA = getSortValue(a, sortKey);
+          const valueB = getSortValue(b, sortKey);
+
+          if (valueA === valueB) return 0;
+          const ascResult = valueA > valueB ? 1 : -1;
+          return sortDirection === 'asc' ? ascResult : -ascResult;
+        });
+
+        const totalPages = Math.max(1, Math.ceil(filteredRows.length / pageSize));
+        currentPage = Math.min(currentPage, totalPages);
+
+        rows.forEach((row) => {
+          row.style.display = 'none';
+        });
+
+        const start = (currentPage - 1) * pageSize;
+        const pageRows = filteredRows.slice(start, start + pageSize);
+        pageRows.forEach((row) => {
+          row.style.display = '';
+        });
+
+        if (pageInfo) {
+          pageInfo.textContent = `Página ${currentPage} de ${totalPages}`;
+        }
+        if (requestsMeta) {
+          requestsMeta.textContent = `${filteredRows.length} resultados`;
+        }
+        if (prevPageButton) {
+          prevPageButton.disabled = currentPage <= 1;
+        }
+        if (nextPageButton) {
+          nextPageButton.disabled = currentPage >= totalPages;
+        }
+
+        updateSortButtons();
+      };
+
+      const downloadCsv = () => {
+        const header = ['Medicamento', 'Dosis', 'Cantidad', 'Paciente', 'Hora', 'Estado'];
+        const data = [header];
+
+        filteredRows.forEach((row) => {
+          const cells = Array.from(row.querySelectorAll('td'));
+          if (cells.length >= 6) {
+            data.push([
+              cells[0].innerText.trim(),
+              cells[1].innerText.trim(),
+              cells[2].innerText.trim(),
+              cells[3].innerText.trim(),
+              cells[4].innerText.trim(),
+              cells[5].innerText.trim()
+            ]);
+          }
+        });
+
+        const csv = data
+          .map((line) => line.map((value) => `"${value.replace(/"/g, '""')}"`).join(','))
+          .join('\n');
+
+        const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+        const link = document.createElement('a');
+        const url = URL.createObjectURL(blob);
+        link.href = url;
+        link.download = `farmacia-solicitudes-${new Date().toISOString().slice(0, 10)}.csv`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+      };
+
+      searchInput?.addEventListener('input', () => {
+        currentPage = 1;
+        applyTableState();
+      });
+
+      pageSizeSelect?.addEventListener('change', () => {
+        const nextValue = Number(pageSizeSelect.value);
+        pageSize = [10, 25, 50].includes(nextValue) ? nextValue : 10;
+        writeStorage('pageSize', String(pageSize));
+        currentPage = 1;
+        applyTableState();
+      });
+
+      sortButtons.forEach((button) => {
+        button.addEventListener('click', () => {
+          const clickedKey = button.getAttribute('data-sort-key');
+          if (!clickedKey) return;
+
+          if (sortKey === clickedKey) {
+            sortDirection = sortDirection === 'asc' ? 'desc' : 'asc';
+          } else {
+            sortKey = clickedKey;
+            sortDirection = 'asc';
+          }
+
+          writeStorage('sortKey', sortKey);
+          writeStorage('sortDirection', sortDirection);
+
+          currentPage = 1;
+          applyTableState();
+        });
+      });
+
+      prevPageButton?.addEventListener('click', () => {
+        if (currentPage <= 1) return;
+        currentPage -= 1;
+        applyTableState();
+      });
+
+      nextPageButton?.addEventListener('click', () => {
+        const totalPages = Math.max(1, Math.ceil(filteredRows.length / pageSize));
+        if (currentPage >= totalPages) return;
+        currentPage += 1;
+        applyTableState();
+      });
+
+      exportButton?.addEventListener('click', downloadCsv);
+      applyTableState();
+
+      const modal = document.getElementById('deliverModal');
+      if (!modal) return;
+
+      modal.addEventListener('show.bs.modal', (event) => {
+        const trigger = event.relatedTarget;
+        if (!trigger) return;
+
+        const prescriptionId = trigger.getAttribute('data-prescription-id') || '';
+        const patient = trigger.getAttribute('data-patient') || '-';
+        const medicine = trigger.getAttribute('data-medicine') || '-';
+        const dosage = trigger.getAttribute('data-dosage') || '-';
+        const quantity = trigger.getAttribute('data-quantity') || '-';
+
+        document.getElementById('deliverPrescriptionId').value = prescriptionId;
+        document.getElementById('deliverPatient').textContent = patient;
+        document.getElementById('deliverMedicine').textContent = medicine;
+        document.getElementById('deliverDosage').textContent = dosage;
+        document.getElementById('deliverQuantity').textContent = quantity;
+      });
+    })();
+  </script>
+}

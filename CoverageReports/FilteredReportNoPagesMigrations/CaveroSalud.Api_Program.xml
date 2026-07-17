@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CoverageReport scope="Program">
+  <Summary>
+    <Class>Program</Class>
+    <Assembly>CaveroSalud.Api</Assembly>
+    <Files>
+      <File>D:\500\ClinicaCavero\src\CaveroSalud.Api\Program.cs</File>
+    </Files>
+    <Coveredlines>92</Coveredlines>
+    <Uncoveredlines>11</Uncoveredlines>
+    <Coverablelines>103</Coverablelines>
+    <Totallines>135</Totallines>
+    <Linecoverage>89.3</Linecoverage>
+    <Coveredbranches>20</Coveredbranches>
+    <Totalbranches>24</Totalbranches>
+    <Branchcoverage>83.3</Branchcoverage>
+    <Coveredmethods>1</Coveredmethods>
+    <Fullcoveredmethods>1</Fullcoveredmethods>
+    <Totalmethods>1</Totalmethods>
+    <Methodcoverage>100</Methodcoverage>
+    <Fullmethodcoverage>100</Fullmethodcoverage>
+  </Summary>
+  <Metrics>
+    <Element name="Main">
+      <CrapScore>6</CrapScore>
+      <Cyclomaticcomplexity>6</Cyclomaticcomplexity>
+      <Linecoverage>100</Linecoverage>
+      <Branchcoverage>100</Branchcoverage>
+    </Element>
+  </Metrics>
+  <Files>
+    <File name="D:\500\ClinicaCavero\src\CaveroSalud.Api\Program.cs">
+      <LineAnalysis line="1" visits="-1" coverage="NotCoverable" coveredbranches="" totalbranches="" content="using System;" />
+      <LineAnalysis line="2" visits="-1" coverage="NotCoverable" coveredbranches="" totalbranches="" content="using CaveroSalud.Domain.Entities;" />
+      <LineAnalysis line="3" visits="-1" coverage="NotCoverable" coveredbranches="" totalbranches="" content="using CaveroSalud.Infrastructure.Identity;" />
+      <LineAnalysis line="4" visits="-1" coverage="NotCoverable" coveredbranches="" totalbranches="" content="using CaveroSalud.Infrastructure.Services;" />
+      <LineAnalysis line="5" visits="-1" coverage="NotCoverable" coveredbranches="" totalbranches="" content="using Microsoft.AspNetCore.Identity;" />
+      <LineAnalysis line="6" visits="-1" coverage="NotCoverable" coveredbranches="" totalbranches="" content="using Microsoft.EntityFrameworkCore;" />
+      <LineAnalysis line="7" visits="-1" coverage="NotCoverable" coveredbranches="" totalbranches="" content="" />
+      <LineAnalysis line="8" visits="350" coverage="Covered" coveredbranches="" totalbranches="" content="var builder = WebApplication.CreateBuilder(args);" />
+      <LineAnalysis line="9" visits="-1" coverage="NotCoverable" coveredbranches="" totalbranches="" content="" />
+      <LineAnalysis line="10" visits="-1" coverage="NotCoverable" coveredbranches="" totalbranches="" content="// Configuration" />
+      <LineAnalysis line="11" visits="350" coverage="Covered" coveredbranches="" totalbranches="" content="builder.Services.Configure&lt;SmtpOptions&gt;(builder.Configuration.GetSection(&quot;Smtp&quot;));" />
+      <LineAnalysis line="12" visits="-1" coverage="NotCoverable" coveredbranches="" totalbranches="" content="" />
+      <LineAnalysis line="13" visits="-1" coverage="NotCoverable" coveredbranches="" totalbranches="" content="// DbContext" />
+      <LineAnalysis line="14" visits="350" coverage="Covered" coveredbranches="" totalbranches="" content="builder.Services.AddDbContext&lt;CaveroDbContext&gt;(options =&gt;" />
+      <LineAnalysis line="15" visits="350" coverage="Covered" coveredbranches="" totalbranches="" content="    options.UseNpgsql(builder.Configuration.GetConnectionString(&quot;Default&quot;)));" />
+      <LineAnalysis line="16" visits="-1" coverage="NotCoverable" coveredbranches="" totalbranches="" content="" />
+      <LineAnalysis line="17" visits="-1" coverage="NotCoverable" coveredbranches="" totalbranches="" content="// Identity" />
+      <LineAnalysis line="18" visits="350" coverage="Covered" coveredbranches="" totalbranches="" content="builder.Services.AddIdentity&lt;ApplicationUser, IdentityRole&lt;Guid&gt;&gt;(options =&gt;" />
+      <LineAnalysis line="19" visits="177" coverage="Covered" coveredbranches="" totalbranches="" content="{" />
+      <LineAnalysis line="20" visits="177" coverage="Covered" coveredbranches="" totalbranches="" content="    options.User.RequireUniqueEmail = true;" />
+      <LineAnalysis line="21" visits="177" coverage="Covered" coveredbranches="" totalbranches="" content="})" />
+      <LineAnalysis line="22" visits="350" coverage="Covered" coveredbranches="" totalbranches="" content="    .AddEntityFrameworkStores&lt;CaveroDbContext&gt;()" />
+      <LineAnalysis line="23" visits="350" coverage="Covered" coveredbranches="" totalbranches="" content="    .AddDefaultTokenProviders();" />
+      <LineAnalysis line="24" visits="-1" coverage="NotCoverable" coveredbranches="" totalbranches="" content="" />
+      <LineAnalysis line="25" visits="-1" coverage="NotCoverable" coveredbranches="" totalbranches="" content="// Email sender" />
+      <LineAnalysis line="26" visits="350" coverage="Covered" coveredbranches="" totalbranches="" content="builder.Services.AddScoped&lt;IEmailSender, SmtpEmailSender&gt;();" />
+      <LineAnalysis line="27" visits="-1" coverage="NotCoverable" coveredbranches="" totalbranches="" content="" />
+      <LineAnalysis line="28" visits="350" coverage="Covered" coveredbranches="" totalbranches="" content="builder.Services.AddControllers();" />
+      <LineAnalysis line="29" visits="350" coverage="Covered" coveredbranches="" totalbranches="" content="builder.Services.AddRazorPages();" />
+      <LineAnalysis line="30" visits="350" coverage="Covered" coveredbranches="" totalbranches="" content="builder.Services.AddHttpClient();" />
+      <LineAnalysis line="31" visits="48" coverage="Covered" coveredbranches="" totalbranches="" content="builder.Services.AddEndpointsApiExplorer();" />
+      <LineAnalysis line="32" visits="350" coverage="Covered" coveredbranches="" totalbranches="" content="builder.Services.AddSwaggerGen();" />
+      <LineAnalysis line="33" visits="-1" coverage="NotCoverable" coveredbranches="" totalbranches="" content="" />
+      <LineAnalysis line="34" visits="350" coverage="Covered" coveredbranches="2" totalbranches="2" content="var app = builder.Build();" />
+      <LineAnalysis line="35" visits="302" coverage="Covered" coveredbranches="" totalbranches="" content="" />
+      <LineAnalysis line="36" visits="350" coverage="Covered" coveredbranches="2" totalbranches="2" content="if (app.Environment.IsDevelopment())" />
+      <LineAnalysis line="37" visits="350" coverage="Covered" coveredbranches="" totalbranches="" content="{" />
+      <LineAnalysis line="38" visits="350" coverage="Covered" coveredbranches="" totalbranches="" content="    app.UseDeveloperExceptionPage();" />
+      <LineAnalysis line="39" visits="350" coverage="Covered" coveredbranches="" totalbranches="" content="    app.UseSwagger();" />
+      <LineAnalysis line="40" visits="48" coverage="Covered" coveredbranches="" totalbranches="" content="    app.UseSwaggerUI();" />
+      <LineAnalysis line="41" visits="48" coverage="Covered" coveredbranches="" totalbranches="" content="}" />
+      <LineAnalysis line="42" visits="302" coverage="Covered" coveredbranches="" totalbranches="" content="" />
+      <LineAnalysis line="43" visits="302" coverage="Covered" coveredbranches="" totalbranches="" content="// Seed roles and an admin user on startup" />
+      <LineAnalysis line="44" visits="350" coverage="Covered" coveredbranches="" totalbranches="" content="using (var scope = app.Services.CreateScope())" />
+      <LineAnalysis line="45" visits="350" coverage="Covered" coveredbranches="" totalbranches="" content="{" />
+      <LineAnalysis line="46" visits="3974" coverage="Covered" coveredbranches="2" totalbranches="2" content="    var logger = scope.ServiceProvider.GetRequiredService&lt;ILogger&lt;Program&gt;&gt;();" />
+      <LineAnalysis line="47" visits="1558" coverage="Covered" coveredbranches="" totalbranches="" content="    var roleManager = scope.ServiceProvider.GetRequiredService&lt;RoleManager&lt;IdentityRole&lt;Guid&gt;&gt;&gt;();" />
+      <LineAnalysis line="48" visits="1558" coverage="Covered" coveredbranches="2" totalbranches="2" content="    var userManager = scope.ServiceProvider.GetRequiredService&lt;UserManager&lt;ApplicationUser&gt;&gt;();" />
+      <LineAnalysis line="49" visits="1515" coverage="Covered" coveredbranches="" totalbranches="" content="    var db = scope.ServiceProvider.GetRequiredService&lt;CaveroDbContext&gt;();" />
+      <LineAnalysis line="50" visits="1467" coverage="Covered" coveredbranches="" totalbranches="" content="" />
+      <LineAnalysis line="51" visits="1515" coverage="Covered" coveredbranches="" totalbranches="" content="    var roles = new[] { &quot;Paciente&quot;, &quot;Médico&quot;, &quot;Laboratorista&quot;, &quot;Farmacéutico&quot;, &quot;Administrador&quot; };" />
+      <LineAnalysis line="52" visits="2134" coverage="Covered" coveredbranches="2" totalbranches="2" content="    foreach (var r in roles)" />
+      <LineAnalysis line="53" visits="542" coverage="Covered" coveredbranches="" totalbranches="" content="    {" />
+      <LineAnalysis line="54" visits="240" coverage="Covered" coveredbranches="2" totalbranches="2" content="        if (!await roleManager.RoleExistsAsync(r))" />
+      <LineAnalysis line="55" visits="535" coverage="Covered" coveredbranches="" totalbranches="" content="        {" />
+      <LineAnalysis line="56" visits="233" coverage="Covered" coveredbranches="" totalbranches="" content="            await roleManager.CreateAsync(new IdentityRole&lt;Guid&gt;(r));" />
+      <LineAnalysis line="57" visits="233" coverage="Covered" coveredbranches="" totalbranches="" content="            logger.LogInformation(&quot;Role '{Role}' created.&quot;, r);" />
+      <LineAnalysis line="58" visits="535" coverage="Covered" coveredbranches="" totalbranches="" content="        }" />
+      <LineAnalysis line="59" visits="240" coverage="Covered" coveredbranches="" totalbranches="" content="    }" />
+      <LineAnalysis line="60" visits="302" coverage="Covered" coveredbranches="" totalbranches="" content="" />
+      <LineAnalysis line="61" visits="350" coverage="Covered" coveredbranches="2" totalbranches="2" content="    var adminEmail = builder.Configuration[&quot;Admin:Email&quot;] ?? &quot;admin@cavero.local&quot;;" />
+      <LineAnalysis line="62" visits="350" coverage="Covered" coveredbranches="2" totalbranches="2" content="    var adminPassword = builder.Configuration[&quot;Admin:Password&quot;] ?? &quot;Admin123!&quot;;" />
+      <LineAnalysis line="63" visits="48" coverage="Covered" coveredbranches="" totalbranches="" content="    var adminUser = await userManager.FindByEmailAsync(adminEmail);" />
+      <LineAnalysis line="64" visits="48" coverage="PartiallyCovered" coveredbranches="1" totalbranches="2" content="    if (adminUser == null)" />
+      <LineAnalysis line="65" visits="350" coverage="Covered" coveredbranches="" totalbranches="" content="    {" />
+      <LineAnalysis line="66" visits="51" coverage="Covered" coveredbranches="" totalbranches="" content="        adminUser = new ApplicationUser" />
+      <LineAnalysis line="67" visits="51" coverage="Covered" coveredbranches="" totalbranches="" content="        {" />
+      <LineAnalysis line="68" visits="51" coverage="Covered" coveredbranches="" totalbranches="" content="            UserName = adminEmail," />
+      <LineAnalysis line="69" visits="353" coverage="Covered" coveredbranches="" totalbranches="" content="            Email = adminEmail," />
+      <LineAnalysis line="70" visits="48" coverage="Covered" coveredbranches="" totalbranches="" content="            EmailConfirmed = true," />
+      <LineAnalysis line="71" visits="350" coverage="Covered" coveredbranches="" totalbranches="" content="            FullName = &quot;Administrador Cavero&quot;," />
+      <LineAnalysis line="72" visits="48" coverage="Covered" coveredbranches="" totalbranches="" content="            Dni = string.Empty," />
+      <LineAnalysis line="73" visits="48" coverage="Covered" coveredbranches="" totalbranches="" content="            PhoneNumber = string.Empty," />
+      <LineAnalysis line="74" visits="48" coverage="Covered" coveredbranches="" totalbranches="" content="            Speciality = string.Empty," />
+      <LineAnalysis line="75" visits="48" coverage="Covered" coveredbranches="" totalbranches="" content="            IsTemporaryPassword = false," />
+      <LineAnalysis line="76" visits="48" coverage="Covered" coveredbranches="" totalbranches="" content="            FirstLoginCompleted = true" />
+      <LineAnalysis line="77" visits="48" coverage="Covered" coveredbranches="" totalbranches="" content="        };" />
+      <LineAnalysis line="78" visits="-1" coverage="NotCoverable" coveredbranches="" totalbranches="" content="" />
+      <LineAnalysis line="79" visits="48" coverage="Covered" coveredbranches="" totalbranches="" content="        var result = await userManager.CreateAsync(adminUser, adminPassword);" />
+      <LineAnalysis line="80" visits="48" coverage="PartiallyCovered" coveredbranches="1" totalbranches="2" content="        if (result.Succeeded)" />
+      <LineAnalysis line="81" visits="48" coverage="Covered" coveredbranches="" totalbranches="" content="        {" />
+      <LineAnalysis line="82" visits="48" coverage="Covered" coveredbranches="" totalbranches="" content="            await userManager.AddToRoleAsync(adminUser, &quot;Administrador&quot;);" />
+      <LineAnalysis line="83" visits="48" coverage="Covered" coveredbranches="" totalbranches="" content="            logger.LogInformation(&quot;Admin user '{AdminEmail}' created and assigned to Administrador role.&quot;, adminEmail);" />
+      <LineAnalysis line="84" visits="48" coverage="Covered" coveredbranches="" totalbranches="" content="        }" />
+      <LineAnalysis line="85" visits="-1" coverage="NotCoverable" coveredbranches="" totalbranches="" content="        else" />
+      <LineAnalysis line="86" visits="0" coverage="NotCovered" coveredbranches="" totalbranches="" content="        {" />
+      <LineAnalysis line="87" visits="0" coverage="NotCovered" coveredbranches="" totalbranches="" content="            logger.LogError(&quot;Failed to create admin user '{AdminEmail}': {Errors}&quot;, adminEmail, string.Join(&quot;; &quot;, result.Errors));" />
+      <LineAnalysis line="88" visits="0" coverage="NotCovered" coveredbranches="" totalbranches="" content="        }" />
+      <LineAnalysis line="89" visits="48" coverage="Covered" coveredbranches="" totalbranches="" content="    }" />
+      <LineAnalysis line="90" visits="0" coverage="NotCovered" coveredbranches="0" totalbranches="2" content="    else if (!await userManager.IsInRoleAsync(adminUser, &quot;Administrador&quot;))" />
+      <LineAnalysis line="91" visits="0" coverage="NotCovered" coveredbranches="" totalbranches="" content="    {" />
+      <LineAnalysis line="92" visits="0" coverage="NotCovered" coveredbranches="" totalbranches="" content="        await userManager.AddToRoleAsync(adminUser, &quot;Administrador&quot;);" />
+      <LineAnalysis line="93" visits="0" coverage="NotCovered" coveredbranches="" totalbranches="" content="        logger.LogInformation(&quot;Existing user '{AdminEmail}' was assigned to Administrador role.&quot;, adminEmail);" />
+      <LineAnalysis line="94" visits="0" coverage="NotCovered" coveredbranches="" totalbranches="" content="    }" />
+      <LineAnalysis line="95" visits="-1" coverage="NotCoverable" coveredbranches="" totalbranches="" content="    else" />
+      <LineAnalysis line="96" visits="0" coverage="NotCovered" coveredbranches="" totalbranches="" content="    {" />
+      <LineAnalysis line="97" visits="0" coverage="NotCovered" coveredbranches="" totalbranches="" content="        logger.LogInformation(&quot;Admin user '{AdminEmail}' already exists and has Administrador role.&quot;, adminEmail);" />
+      <LineAnalysis line="98" visits="0" coverage="NotCovered" coveredbranches="" totalbranches="" content="    }" />
+      <LineAnalysis line="99" visits="-1" coverage="NotCoverable" coveredbranches="" totalbranches="" content="" />
+      <LineAnalysis line="100" visits="48" coverage="Covered" coveredbranches="2" totalbranches="2" content="    if (!await db.Specialities.AnyAsync())" />
+      <LineAnalysis line="101" visits="44" coverage="Covered" coveredbranches="" totalbranches="" content="    {" />
+      <LineAnalysis line="102" visits="44" coverage="Covered" coveredbranches="" totalbranches="" content="        var defaults = new[]" />
+      <LineAnalysis line="103" visits="44" coverage="Covered" coveredbranches="" totalbranches="" content="        {" />
+      <LineAnalysis line="104" visits="44" coverage="Covered" coveredbranches="" totalbranches="" content="            new Speciality { Id = Guid.NewGuid(), Name = &quot;Cardiología&quot;, Description = &quot;Diagnóstico y control cardiovascular.&quot;, IsActive = true }," />
+      <LineAnalysis line="105" visits="44" coverage="Covered" coveredbranches="" totalbranches="" content="            new Speciality { Id = Guid.NewGuid(), Name = &quot;Neurología&quot;, Description = &quot;Atención de enfermedades del sistema nervioso.&quot;, IsActive = true }," />
+      <LineAnalysis line="106" visits="44" coverage="Covered" coveredbranches="" totalbranches="" content="            new Speciality { Id = Guid.NewGuid(), Name = &quot;Pediatría&quot;, Description = &quot;Cuidado integral para niños y adolescentes.&quot;, IsActive = true }," />
+      <LineAnalysis line="107" visits="44" coverage="Covered" coveredbranches="" totalbranches="" content="            new Speciality { Id = Guid.NewGuid(), Name = &quot;Ginecología&quot;, Description = &quot;Salud integral de la mujer.&quot;, IsActive = true }," />
+      <LineAnalysis line="108" visits="44" coverage="Covered" coveredbranches="" totalbranches="" content="            new Speciality { Id = Guid.NewGuid(), Name = &quot;Traumatología&quot;, Description = &quot;Evaluación y tratamiento musculoesquelético.&quot;, IsActive = true }," />
+      <LineAnalysis line="109" visits="44" coverage="Covered" coveredbranches="" totalbranches="" content="            new Speciality { Id = Guid.NewGuid(), Name = &quot;Oftalmología&quot;, Description = &quot;Prevención y tratamiento ocular.&quot;, IsActive = true }," />
+      <LineAnalysis line="110" visits="44" coverage="Covered" coveredbranches="" totalbranches="" content="            new Speciality { Id = Guid.NewGuid(), Name = &quot;Odontología&quot;, Description = &quot;Atención preventiva y restaurativa dental.&quot;, IsActive = true }," />
+      <LineAnalysis line="111" visits="44" coverage="Covered" coveredbranches="" totalbranches="" content="            new Speciality { Id = Guid.NewGuid(), Name = &quot;Dermatología&quot;, Description = &quot;Diagnóstico y cuidado de la piel.&quot;, IsActive = true }" />
+      <LineAnalysis line="112" visits="44" coverage="Covered" coveredbranches="" totalbranches="" content="        };" />
+      <LineAnalysis line="113" visits="-1" coverage="NotCoverable" coveredbranches="" totalbranches="" content="" />
+      <LineAnalysis line="114" visits="44" coverage="Covered" coveredbranches="" totalbranches="" content="        await db.Specialities.AddRangeAsync(defaults);" />
+      <LineAnalysis line="115" visits="44" coverage="Covered" coveredbranches="" totalbranches="" content="        await db.SaveChangesAsync();" />
+      <LineAnalysis line="116" visits="44" coverage="Covered" coveredbranches="" totalbranches="" content="        logger.LogInformation(&quot;Default specialities seeded in database.&quot;);" />
+      <LineAnalysis line="117" visits="44" coverage="Covered" coveredbranches="" totalbranches="" content="    }" />
+      <LineAnalysis line="118" visits="48" coverage="Covered" coveredbranches="" totalbranches="" content="}" />
+      <LineAnalysis line="119" visits="-1" coverage="NotCoverable" coveredbranches="" totalbranches="" content="" />
+      <LineAnalysis line="120" visits="48" coverage="Covered" coveredbranches="" totalbranches="" content="app.UseRouting();" />
+      <LineAnalysis line="121" visits="-1" coverage="NotCoverable" coveredbranches="" totalbranches="" content="" />
+      <LineAnalysis line="122" visits="-1" coverage="NotCoverable" coveredbranches="" totalbranches="" content="// Serve static files from wwwroot (public pages)" />
+      <LineAnalysis line="123" visits="48" coverage="Covered" coveredbranches="" totalbranches="" content="app.UseStaticFiles();" />
+      <LineAnalysis line="124" visits="-1" coverage="NotCoverable" coveredbranches="" totalbranches="" content="" />
+      <LineAnalysis line="125" visits="48" coverage="Covered" coveredbranches="" totalbranches="" content="app.UseAuthentication();" />
+      <LineAnalysis line="126" visits="48" coverage="Covered" coveredbranches="" totalbranches="" content="app.UseAuthorization();" />
+      <LineAnalysis line="127" visits="48" coverage="Covered" coveredbranches="" totalbranches="" content="app.MapControllers();" />
+      <LineAnalysis line="128" visits="48" coverage="Covered" coveredbranches="" totalbranches="" content="app.MapRazorPages();" />
+      <LineAnalysis line="129" visits="-1" coverage="NotCoverable" coveredbranches="" totalbranches="" content="" />
+      <LineAnalysis line="130" visits="-1" coverage="NotCoverable" coveredbranches="" totalbranches="" content="// If a request lands on /, redirect to the public index" />
+      <LineAnalysis line="131" visits="-1" coverage="NotCoverable" coveredbranches="" totalbranches="" content="// Root is served by Razor Pages / static files" />
+      <LineAnalysis line="132" visits="-1" coverage="NotCoverable" coveredbranches="" totalbranches="" content="" />
+      <LineAnalysis line="133" visits="48" coverage="Covered" coveredbranches="" totalbranches="" content="app.Run();" />
+      <LineAnalysis line="134" visits="-1" coverage="NotCoverable" coveredbranches="" totalbranches="" content="" />
+      <LineAnalysis line="135" visits="-1" coverage="NotCoverable" coveredbranches="" totalbranches="" content="public partial class Program { }" />
+    </File>
+  </Files>
+</CoverageReport>

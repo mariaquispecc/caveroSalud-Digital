@@ -1,0 +1,22 @@
+@page "/admin/reports"
+@model CaveroSalud.Api.Pages.Admin.ReportsModel
+@{
+  ViewData["Title"] = "Reportes";
+}
+
+<div class="container py-5">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+      <h1 class="h3 mb-0">Reportes</h1>
+      <div class="small text-muted">Resumen operativo del sistema</div>
+    </div>
+    <a class="btn btn-outline-secondary" href="/app/admin">Volver al panel</a>
+  </div>
+
+  <div class="row g-3">
+    <div class="col-md-3"><div class="card shadow-sm p-3"><div class="small text-muted">Usuarios</div><div class="h4 mb-0">@Model.UsersCount</div></div></div>
+    <div class="col-md-3"><div class="card shadow-sm p-3"><div class="small text-muted">Citas</div><div class="h4 mb-0">@Model.AppointmentsCount</div></div></div>
+    <div class="col-md-3"><div class="card shadow-sm p-3"><div class="small text-muted">Mensajes</div><div class="h4 mb-0">@Model.ContactMessagesCount</div></div></div>
+    <div class="col-md-3"><div class="card shadow-sm p-3"><div class="small text-muted">Recetas</div><div class="h4 mb-0">@Model.PrescriptionsCount</div></div></div>
+  </div>
+</div>

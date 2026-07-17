@@ -1,0 +1,154 @@
+@page "/app/paciente"
+@model CaveroSalud.Api.Pages.App.PacienteModel
+@{
+  ViewData["Title"] = "Panel paciente";
+}
+<div class="container py-5">
+  @if (!string.IsNullOrWhiteSpace(Model.StatusMessage))
+  {
+    <div class="alert alert-success" role="alert">@Model.StatusMessage</div>
+  }
+  @if (!string.IsNullOrWhiteSpace(Model.ErrorMessage))
+  {
+    <div class="alert alert-danger" role="alert">@Model.ErrorMessage</div>
+  }
+  @if (!string.IsNullOrWhiteSpace(Model.NotificationDetailTitle))
+  {
+    <div class="alert alert-info" role="alert">
+      <div class="fw-semibold">@Model.NotificationDetailTitle</div>
+      <div>@Model.NotificationDetailBody</div>
+    </div>
+  }
+
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="h3">Mi panel</h1>
+    <div class="text-end d-flex align-items-center gap-2">
+      <button class="btn btn-outline-primary btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#notificacionesPaciente" aria-expanded="false" title="Notificaciones">
+        <i class="fa-regular fa-bell"></i>
+      </button>
+      <button class="btn btn-outline-secondary btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#cuentaPaciente" aria-expanded="false" title="Mi cuenta">
+        <i class="fa-regular fa-user"></i>
+      </button>
+      <div>
+      <div class="fw-semibold">@Model.UserFullName</div>
+      <small class="text-muted">Paciente</small>
+      </div>
+    </div>
+  </div>
+
+  <div id="notificacionesPaciente" class="collapse mb-4">
+    <div class="card shadow-sm h-100">
+      <div class="card-body">
+        <h6 class="mb-3">Notificaciones</h6>
+        <ul class="list-group list-group-flush">
+          @foreach (var n in Model.Notifications)
+          {
+            var badge = n.Type == "warning"
+              ? "text-bg-warning"
+              : n.Type == "success"
+                ? "text-bg-success"
+                : "text-bg-primary";
+
+            <li class="list-group-item d-flex justify-content-between align-items-start">
+              <div>
+                <div class="fw-semibold">@n.Message</div>
+                <div class="small text-muted">@n.When</div>
+              </div>
+              <div class="d-flex align-items-center gap-2">
+                @if (n.Id.HasValue)
+                {
+                  <form method="post" asp-page-handler="ViewNotification" class="d-inline">
+                    <input type="hidden" name="id" value="@n.Id" />
+                    <button type="submit" class="btn btn-sm @(n.IsRead ? "btn-outline-secondary" : "btn-outline-primary")">Ver detalle</button>
+                  </form>
+                }
+                <span class="badge @badge">@n.Type</span>
+              </div>
+            </li>
+          }
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div id="cuentaPaciente" class="collapse mb-4">
+    <div class="card shadow-sm h-100">
+      <div class="card-body">
+        <h6 class="mb-3">Gestionar mi cuenta</h6>
+        <form method="post" asp-page-handler="UpdateAccount" class="vstack gap-3">
+          <div>
+            <label asp-for="Account.FullName" class="form-label">Nombre completo</label>
+            <input asp-for="Account.FullName" class="form-control" />
+          </div>
+          <div>
+            <label asp-for="Account.Email" class="form-label">Correo</label>
+            <input asp-for="Account.Email" type="email" class="form-control" />
+          </div>
+          <div>
+            <label asp-for="Account.Phone" class="form-label">Teléfono</label>
+            <input asp-for="Account.Phone" class="form-control" />
+          </div>
+          <div>
+            <label asp-for="Account.Dni" class="form-label">DNI</label>
+            <input asp-for="Account.Dni" class="form-control" />
+          </div>
+          <div>
+            <label asp-for="Account.CurrentPassword" class="form-label">Contraseña actual</label>
+            <input asp-for="Account.CurrentPassword" type="password" class="form-control" placeholder="Déjala vacía si no deseas cambiarla" />
+          </div>
+          <div>
+            <label asp-for="Account.NewPassword" class="form-label">Nueva contraseña</label>
+            <input asp-for="Account.NewPassword" type="password" class="form-control" />
+          </div>
+          <div>
+            <label asp-for="Account.ConfirmPassword" class="form-label">Confirmar nueva contraseña</label>
+            <input asp-for="Account.ConfirmPassword" type="password" class="form-control" />
+          </div>
+          <div>
+            <button type="submit" class="btn btn-outline-primary">Guardar cambios</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4">
+    <div class="col-md-6">
+      <div class="card shadow-sm p-3">
+        <h6>Próxima cita</h6>
+        <div class="mt-2">
+          @if (Model.NextAppointment != null) {
+            <div class="fw-semibold">@Model.NextAppointment.Speciality — @Model.NextAppointment.Date.ToString("g")</div>
+            <div class="small text-muted">Dr. @Model.NextAppointment.DoctorName</div>
+          } else {
+            <div class="text-muted">No tienes citas programadas.</div>
+          }
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="card shadow-sm p-3">
+        <h6>Historial reciente</h6>
+        <ul class="list-group list-group-flush mt-2">
+          @foreach(var r in Model.RecentRecords) {
+            <li class="list-group-item">
+              <div class="fw-semibold">@r.Title</div>
+              <div class="small text-muted">@r.When</div>
+            </li>
+          }
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="card shadow-sm">
+    <div class="card-body">
+      <h6>Acciones</h6>
+      <div class="d-flex gap-2 mt-3">
+        <a class="btn btn-primary" href="/app/paciente/citas/nueva">Agendar cita</a>
+        <a class="btn btn-outline-secondary" href="/app/paciente/historial">Ver historial médico</a>
+      </div>
+    </div>
+  </div>
+
+</div>

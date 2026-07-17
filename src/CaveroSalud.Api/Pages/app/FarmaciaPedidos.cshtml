@@ -1,0 +1,43 @@
+@page "/app/farmacia/pedidos"
+@model CaveroSalud.Api.Pages.App.FarmaciaPedidosModel
+@{
+  ViewData["Title"] = "Pedidos de farmacia";
+}
+
+<div class="container py-5">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+      <h1 class="h3 mb-0">Pedidos de farmacia</h1>
+      <div class="small text-muted">Recetas y solicitudes recientes</div>
+    </div>
+    <a class="btn btn-outline-secondary" href="/app/farmacia">Volver al panel</a>
+  </div>
+
+  <div class="card shadow-sm">
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0">
+          <thead class="table-light">
+            <tr>
+              <th>Receta</th>
+              <th>Paciente</th>
+              <th>Estado</th>
+              <th>Fecha</th>
+            </tr>
+          </thead>
+          <tbody>
+            @foreach (var item in Model.Prescriptions)
+            {
+              <tr>
+                <td class="fw-semibold">@item.ShortId</td>
+                <td>@item.PatientName</td>
+                <td>@item.Status</td>
+                <td>@item.CreatedAt.ToLocalTime().ToString("g")</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

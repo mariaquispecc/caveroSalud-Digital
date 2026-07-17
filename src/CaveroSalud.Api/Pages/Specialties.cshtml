@@ -1,0 +1,18 @@
+@page
+@model CaveroSalud.Api.Pages.SpecialtiesModel
+@{
+  ViewData["Title"] = "Especialidades";
+}
+
+<h1 class="mb-4">Especialidades</h1>
+<div class="row g-3">
+  @foreach (var speciality in Model.Specialities)
+  {
+    <div class="col-6 col-md-4 col-lg-3">
+      <div class="card p-3 h-100">
+        <div class="fw-semibold">@speciality.Name</div>
+        <div class="small text-muted mt-2">@speciality.Description</div>
+      </div>
+    </div>
+  }
+</div>

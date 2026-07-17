@@ -1,0 +1,83 @@
+@page "/app/paciente/citas/nueva"
+@model CaveroSalud.Api.Pages.App.PacienteCitaNuevaModel
+@{
+  ViewData["Title"] = "Agendar cita";
+}
+
+<div class="container py-5">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="h3 mb-0">Agendar cita</h1>
+    <a class="btn btn-outline-secondary" href="/app/paciente">Volver al panel</a>
+  </div>
+
+  <div class="card shadow-sm">
+    <div class="card-body">
+      <p class="text-muted mb-4">Completa los datos para registrar una nueva cita.</p>
+
+      <form method="get" class="row g-3 align-items-end mb-4">
+        <div class="col-md-8">
+          <label asp-for="SelectedSpecialityId" class="form-label">Especialidad</label>
+          <select asp-for="SelectedSpecialityId" asp-items="Model.SpecialityOptions" class="form-select" onchange="this.form.submit()"></select>
+        </div>
+        <div class="col-md-4">
+          <button type="submit" class="btn btn-outline-primary w-100">Cargar doctores</button>
+        </div>
+      </form>
+
+      <form method="post" class="row g-3">
+        <div asp-validation-summary="All" class="text-danger small"></div>
+
+        <input type="hidden" asp-for="SelectedSpecialityId" />
+
+        <div class="col-md-6">
+          <label class="form-label">Especialidad seleccionada</label>
+          <input class="form-control" value="@Model.SelectedSpecialityName" readonly />
+        </div>
+
+        <div class="col-md-6">
+          <label asp-for="DoctorId" class="form-label">ID del doctor</label>
+          @if (Model.DoctorOptions.Count > 0)
+          {
+            <select asp-for="DoctorId" asp-items="Model.DoctorOptions" class="form-select"></select>
+          }
+          else
+          {
+            <input asp-for="DoctorId" class="form-control" placeholder="Se asigna automáticamente si existe un único médico" />
+          }
+          <div class="form-text">Si la especialidad tiene un solo médico activo, se asigna automáticamente.</div>
+        </div>
+
+        <div class="col-md-6">
+          <label asp-for="StartAt" class="form-label">Fecha y hora de inicio</label>
+          <input asp-for="StartAt" type="datetime-local" class="form-control" />
+          <span asp-validation-for="StartAt" class="text-danger small"></span>
+        </div>
+
+        <div class="col-md-6">
+          <label asp-for="EndAt" class="form-label">Fecha y hora de fin</label>
+          <input asp-for="EndAt" type="datetime-local" class="form-control" />
+          <span asp-validation-for="EndAt" class="text-danger small"></span>
+        </div>
+
+        <div class="col-12">
+          <button type="submit" class="btn btn-primary">Guardar cita</button>
+        </div>
+      </form>
+
+      @if (!string.IsNullOrWhiteSpace(Model.SuccessMessage))
+      {
+        <div class="alert alert-success mt-4 mb-0">@Model.SuccessMessage</div>
+      }
+
+      @if (!string.IsNullOrWhiteSpace(Model.ErrorMessage))
+      {
+        <div class="alert alert-danger mt-4 mb-0">@Model.ErrorMessage</div>
+      }
+
+      @if (Model.AvailableDoctors.Count > 1)
+      {
+        <div class="alert alert-info mt-4 mb-0">Esta especialidad tiene varios médicos activos. Selecciona uno para continuar.</div>
+      }
+    </div>
+  </div>
+</div>

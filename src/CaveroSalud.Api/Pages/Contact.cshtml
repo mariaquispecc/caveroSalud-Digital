@@ -1,0 +1,43 @@
+@page
+@{
+  ViewData["Title"] = "Contacto";
+}
+
+<h1 class="mb-3">Contacto</h1>
+<form id="contactForm" class="row g-3">
+  <div class="col-md-6">
+    <label class="form-label" for="name">Nombre</label>
+    <input class="form-control" id="name" name="name" required />
+  </div>
+  <div class="col-md-6">
+    <label class="form-label" for="email">Correo</label>
+    <input class="form-control" id="email" name="email" type="email" required />
+  </div>
+  <div class="col-12">
+    <label class="form-label" for="phone">Teléfono</label>
+    <input class="form-control" id="phone" name="phone" />
+  </div>
+  <div class="col-12">
+    <label class="form-label" for="message">Mensaje</label>
+    <textarea class="form-control" id="message" name="message" rows="6" required></textarea>
+  </div>
+  <div class="col-12 d-flex justify-content-end">
+    <div id="status" class="me-3"></div>
+    <button class="btn btn-primary" type="submit">Enviar</button>
+  </div>
+</form>
+
+@section Scripts {
+<script>
+document.getElementById('contactForm').addEventListener('submit', async function(e){
+  e.preventDefault();
+  const payload={name:document.getElementById('name').value,email:document.getElementById('email').value,phone:document.getElementById('phone').value,message:document.getElementById('message').value};
+  try{
+    const res=await fetch('/api/v1/public/contact',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
+    const statusEl=document.getElementById('status');
+    if(res.ok){statusEl.className='text-success';statusEl.innerText='Mensaje enviado. Gracias.';document.getElementById('contactForm').reset();}
+    else{statusEl.className='text-danger';statusEl.innerText='Error al enviar mensaje.'}
+  }catch(err){const statusEl=document.getElementById('status');statusEl.className='text-danger';statusEl.innerText='Error de red.'}
+});
+</script>
+}

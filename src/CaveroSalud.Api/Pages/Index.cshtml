@@ -1,0 +1,228 @@
+@page
+@model CaveroSalud.Api.Pages.IndexModel
+@{
+  ViewData["Title"] = "Inicio";
+}
+
+<style>
+  .hero {
+    background: linear-gradient(135deg, #1f6df5 0%, #2566df 50%, #1b4fd4 100%);
+    color: white;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at top right, rgba(255,255,255,0.18), transparent 35%);
+    opacity: 0.7;
+  }
+  .hero .container {
+    position: relative;
+    z-index: 1;
+  }
+  .hero h1,
+  .hero p,
+  .hero a {
+    color: white;
+  }
+  .hero .btn.btn-light {
+    color: #1f6df5;
+    font-weight: 600;
+  }
+  .section-card,
+  .content-card {
+    border: 0;
+    border-radius: 1rem;
+    box-shadow: 0 18px 50px rgba(15, 23, 42, 0.1);
+  }
+</style>
+
+<header class="hero py-6 mb-5">
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-lg-7">
+        <h1 class="display-5 fw-bold mb-3">Tu salud es nuestra prioridad</h1>
+        <p class="lead mb-4">En Clínica Cavero ofrecemos atención médica integral con profesionales especializados y tecnología de vanguardia para tu bienestar.</p>
+        <div class="d-flex flex-wrap gap-2">
+          <a href="@(User.Identity?.IsAuthenticated == true ? Model.PanelUrl : "/login")" class="btn btn-light btn-lg"><i class="fa-solid fa-calendar-check me-2"></i>Agendar Cita</a>
+          <a href="#about" class="btn btn-outline-light btn-lg"><i class="fa-solid fa-circle-info me-2"></i>Más información</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section id="about" class="container py-5">
+  <div class="text-center mb-5">
+    <h2 class="h3">Nosotros</h2>
+    <p class="text-muted mx-auto" style="max-width: 680px;">Conoce más sobre nuestra misión, visión y valores.</p>
+  </div>
+  <div class="row g-4">
+    <div class="col-md-4">
+      <div class="card content-card h-100 p-4 text-center">
+        <div class="mb-3 text-primary fs-2"><i class="fa-solid fa-hand-holding-heart"></i></div>
+        <h5 class="mb-3">Misión</h5>
+        <p class="text-muted">Brindar servicios de salud integrales con calidad, calidez y tecnología de vanguardia, centrados en el paciente y su familia, promoviendo la prevención y el bienestar de nuestra comunidad.</p>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card content-card h-100 p-4 text-center">
+        <div class="mb-3 text-primary fs-2"><i class="fa-solid fa-eye"></i></div>
+        <h5 class="mb-3">Visión</h5>
+        <p class="text-muted">Ser la clínica líder en Ayacucho, reconocida por nuestra excelencia médica, innovación tecnológica y atención humanizada.</p>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card content-card h-100 p-4 text-center">
+        <div class="mb-3 text-primary fs-2"><i class="fa-solid fa-heart"></i></div>
+        <h5 class="mb-3">Valores</h5>
+        <p class="text-muted">Calidad, Ética, Responsabilidad, Empatía, Innovación y Compromiso con nuestros pacientes y la comunidad.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="services" class="container py-5 bg-light rounded-4">
+  <div class="text-center mb-5">
+    <h2 class="h3">Nuestros Servicios</h2>
+    <p class="text-muted mx-auto" style="max-width: 680px;">Contamos con una amplia gama de servicios médicos para tu bienestar.</p>
+  </div>
+  <div class="row g-4">
+    <div class="col-md-3">
+      <div class="card content-card h-100 p-4 text-center">
+        <div class="mb-3 text-primary fs-2"><i class="fa-solid fa-user-doctor"></i></div>
+        <h5 class="mb-3">Consultas Médicas</h5>
+        <p class="text-muted">Atención especializada en diversas áreas médicas con profesionales calificados.</p>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card content-card h-100 p-4 text-center">
+        <div class="mb-3 text-primary fs-2"><i class="fa-solid fa-vials"></i></div>
+        <h5 class="mb-3">Laboratorio Clínico</h5>
+        <p class="text-muted">Análisis clínicos completos con tecnología de última generación y resultados confiables.</p>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card content-card h-100 p-4 text-center">
+        <div class="mb-3 text-primary fs-2"><i class="fa-solid fa-pills"></i></div>
+        <h5 class="mb-3">Farmacia</h5>
+        <p class="text-muted">Medicamentos de calidad con asesoramiento farmacéutico profesional.</p>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card content-card h-100 p-4 text-center">
+        <div class="mb-3 text-primary fs-2"><i class="fa-solid fa-briefcase-medical"></i></div>
+        <h5 class="mb-3">Emergencias</h5>
+        <p class="text-muted">Atención médica inmediata las 24 horas con equipo especializado en emergencias.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="specialties" class="container py-5">
+  <div class="text-center mb-5">
+    <h2 class="h3">Especialidades Médicas</h2>
+    <p class="text-muted mx-auto" style="max-width: 680px;">Contamos con especialistas en diversas áreas de la medicina.</p>
+  </div>
+  <div class="row g-4">
+    @foreach (var speciality in Model.Specialities)
+    {
+      <div class="col-md-4">
+        <div class="card content-card h-100 p-4 text-center">
+          <div class="mb-3 text-primary fs-2"><i class="fa-solid fa-notes-medical"></i></div>
+          <h5>@speciality.Name</h5>
+          <p class="text-muted">@speciality.Description</p>
+        </div>
+      </div>
+    }
+  </div>
+</section>
+
+<section id="contact" class="container py-5">
+  <div class="row g-4 align-items-start">
+    <div class="col-lg-5">
+      <h2 class="h3 mb-3">Contacto</h2>
+      <p class="text-muted">Estamos aquí para atenderte. Contáctanos para más información.</p>
+      <div class="card content-card h-100 p-4">
+        <div class="mb-3">
+          <strong>Información de Contacto</strong>
+        </div>
+        <div class="mb-3"><i class="fa-solid fa-location-dot me-2"></i>Ayacucho, Perú</div>
+        <div class="mb-3"><i class="fa-solid fa-phone me-2"></i>+51 966 123 456</div>
+        <div class="mb-3"><i class="fa-solid fa-envelope me-2"></i>info@clinicacavero.pe</div>
+        <div class="mb-3"><i class="fa-solid fa-globe me-2"></i>www.clinicacavero.pe</div>
+        <div class="mt-4 text-muted">
+          <div><i class="fa-regular fa-clock me-2"></i>Lunes a Viernes: 7:00 AM - 8:00 PM</div>
+          <div><i class="fa-regular fa-clock me-2"></i>Sábados: 8:00 AM - 2:00 PM</div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-7">
+      <div class="card content-card border-0 shadow-sm p-4">
+        <h3 class="h5 mb-4">Envíanos un Mensaje</h3>
+        <form id="contactForm" class="row g-3">
+          <div class="col-md-6">
+            <label class="form-label" for="name">Nombre Completo</label>
+            <input class="form-control" id="name" name="name" required />
+          </div>
+          <div class="col-md-6">
+            <label class="form-label" for="email">Correo Electrónico</label>
+            <input class="form-control" id="email" name="email" type="email" required />
+          </div>
+          <div class="col-12">
+            <label class="form-label" for="subject">Asunto</label>
+            <input class="form-control" id="subject" name="subject" required />
+          </div>
+          <div class="col-12">
+            <label class="form-label" for="message">Mensaje</label>
+            <textarea class="form-control" id="message" name="message" rows="5" required></textarea>
+          </div>
+          <div class="col-12 d-flex justify-content-end align-items-center">
+            <div id="status" class="me-3 text-muted"></div>
+            <button class="btn btn-primary" type="submit">Enviar Mensaje</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+@section Scripts {
+<script>
+  document.getElementById('contactForm')?.addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const payload = {
+      name: document.getElementById('name').value,
+      email: document.getElementById('email').value,
+      subject: document.getElementById('subject').value,
+      message: document.getElementById('message').value
+    };
+
+    const statusEl = document.getElementById('status');
+    try {
+      const res = await fetch('/api/v1/public/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+
+      if (res.ok) {
+        statusEl.className = 'text-success';
+        statusEl.innerText = 'Mensaje enviado. Gracias.';
+        const contactForm = document.getElementById('contactForm');
+        if (contactForm instanceof HTMLFormElement) {
+          contactForm.reset();
+        }
+      } else {
+        statusEl.className = 'text-danger';
+        statusEl.innerText = 'Error al enviar mensaje.';
+      }
+    } catch (err) {
+      statusEl.className = 'text-danger';
+      statusEl.innerText = 'Error de red.';
+    }
+  });
+</script>
+}

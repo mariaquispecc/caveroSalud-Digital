@@ -1,0 +1,26 @@
+CaveroSalud Digital — Speckit Constitution
+
+Este proyecto reemplaza los procesos manuales de la Clínica Cavero (Ayacucho, Perú) por una plataforma web dinámica llamada "CaveroSalud Digital".
+
+Principios no negociables:
+- Backend en ASP.NET Core (C#) con arquitectura por capas (API / Aplicación / Dominio / Infraestructura).
+- Persistencia en PostgreSQL, acceso a datos vía Entity Framework Core + Npgsql. Nada de datos simulados en memoria: todo dato mostrado debe venir de la base de datos.
+- Autenticación y autorización basada en roles: Paciente, Médico, Laboratorista, Farmacéutico, Administrador. Cada rol solo ve y opera sobre los módulos que le corresponden.
+- La confidencialidad de historias clínicas y datos personales es crítica: ningún endpoint debe exponer datos de un paciente a un rol o usuario sin permiso explícito.
+- Frontend responsivo (accesible desde celular y computadora).
+- Cada módulo (citas, historia clínica, laboratorio, farmacia, administración) se especifica y se construye como una feature independiente dentro de este mismo repositorio.
+- Trazabilidad: toda decisión técnica relevante debe quedar documentada en el plan de la feature correspondiente, no solo en el código.
+- El sistema debe poder desplegarse en un entorno gratuito o de bajo costo (Azure App Service tier gratuito/Basic + base de datos PostgreSQL alojada en un proveedor gratuito distinto de Azure).
+
+Notas operativas iniciales:
+- Todas las features deben incluir un documento `plan.md` con las decisiones técnicas, alternativas consideradas y razones de elección.
+- Las migraciones de EF Core deberán almacenarse en la carpeta de Infraestructura y versionarse en el repo.
+- Las pruebas automatizadas (unitarias e integradas) son obligatorias para lógica de dominio y accesos a datos.
+- No se permite exponer datos sensibles en logs o en endpoints públicos.
+
+Contacto y gobernanza:
+- Repositorio: CaveroSalud Digital (raíz del repo)
+- Mantenedores iniciales: Equipo de desarrollo de Clínica Cavero
+- Políticas de revisión: PR obligatorio, revisión por al menos 1 desarrollador y 1 representante clínico para cambios que afecten datos clínicos.
+
+Fecha de creación: 2026-07-16

@@ -1,0 +1,257 @@
+@page "/app/laboratorio"
+@model CaveroSalud.Api.Pages.App.LaboratorioModel
+@{
+  ViewData["Title"] = "Panel laboratorio";
+}
+<div class="container py-5">
+  @if (!string.IsNullOrWhiteSpace(Model.StatusMessage))
+  {
+    <div class="alert alert-success" role="alert">@Model.StatusMessage</div>
+  }
+  @if (!string.IsNullOrWhiteSpace(Model.ErrorMessage))
+  {
+    <div class="alert alert-danger" role="alert">@Model.ErrorMessage</div>
+  }
+  @if (!string.IsNullOrWhiteSpace(Model.NotificationDetailTitle))
+  {
+    <div class="alert alert-info" role="alert">
+      <div class="fw-semibold">@Model.NotificationDetailTitle</div>
+      <div>@Model.NotificationDetailBody</div>
+    </div>
+  }
+
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="h3">Laboratorio</h1>
+    <div class="text-end d-flex align-items-center gap-2">
+      <a class="btn btn-outline-success btn-sm" href="/app/laboratorio/inventario" title="Inventario">
+        <i class="fa-solid fa-boxes-stacked"></i>
+      </a>
+      <button class="btn btn-outline-primary btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#notificacionesLaboratorio" aria-expanded="false" title="Notificaciones">
+        <i class="fa-regular fa-bell"></i>
+      </button>
+      <button class="btn btn-outline-secondary btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#cuentaLaboratorio" aria-expanded="false" title="Mi cuenta">
+        <i class="fa-regular fa-user"></i>
+      </button>
+      <div>
+      <div class="fw-semibold">@Model.UserFullName</div>
+      <small class="text-muted">Laboratorista</small>
+      </div>
+    </div>
+  </div>
+
+  <div id="notificacionesLaboratorio" class="collapse mb-4">
+    <div class="card shadow-sm h-100">
+      <div class="card-body">
+        <h6 class="mb-3">Notificaciones</h6>
+        <ul class="list-group list-group-flush">
+          @foreach (var n in Model.Notifications)
+          {
+            <li class="list-group-item d-flex justify-content-between align-items-start">
+              <div>
+                <div class="fw-semibold">@n.Message</div>
+                <div class="small text-muted">@n.When</div>
+              </div>
+              <div class="d-flex align-items-center gap-2">
+                @if (n.Id.HasValue)
+                {
+                  <form method="post" asp-page-handler="ViewNotification" class="d-inline">
+                    <input type="hidden" name="id" value="@n.Id" />
+                    <input type="hidden" name="orderSearch" value="@Model.OrderSearch" />
+                    <input type="hidden" name="orderStatus" value="@Model.OrderStatus" />
+                    <input type="hidden" name="orderPage" value="@Model.OrderPage" />
+                    <input type="hidden" name="orderPageSize" value="@Model.OrderPageSize" />
+                    <button type="submit" class="btn btn-sm @(n.IsRead ? "btn-outline-secondary" : "btn-outline-primary")">Ver detalle</button>
+                  </form>
+                }
+                <span class="badge @(n.Type == "warning" ? "text-bg-warning" : n.Type == "success" ? "text-bg-success" : "text-bg-primary")">@n.Type</span>
+              </div>
+            </li>
+          }
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div id="cuentaLaboratorio" class="collapse mb-4">
+    <div class="card shadow-sm h-100">
+      <div class="card-body">
+        <h6 class="mb-3">Gestionar mi cuenta</h6>
+        <form method="post" asp-page-handler="UpdateAccount" class="vstack gap-2">
+          <div>
+            <label asp-for="Account.FullName" class="form-label">Nombre completo</label>
+            <input asp-for="Account.FullName" class="form-control" />
+          </div>
+          <div>
+            <label asp-for="Account.Email" class="form-label">Correo</label>
+            <input asp-for="Account.Email" type="email" class="form-control" />
+          </div>
+          <div>
+            <label asp-for="Account.Phone" class="form-label">Teléfono</label>
+            <input asp-for="Account.Phone" class="form-control" />
+          </div>
+          <div>
+            <label asp-for="Account.Dni" class="form-label">DNI</label>
+            <input asp-for="Account.Dni" class="form-control" />
+          </div>
+          <button type="submit" class="btn btn-outline-primary">Guardar cambios</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div class="row g-3 mb-4">
+    <div class="col-md-4">
+      <div class="card p-3 shadow-sm">
+        <div class="small text-muted">Pendientes</div>
+        <div class="h4 mt-2">@Model.Stats.Pending</div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card p-3 shadow-sm">
+        <div class="small text-muted">Procesados hoy</div>
+        <div class="h4 mt-2">@Model.Stats.Processed</div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card p-3 shadow-sm">
+        <div class="small text-muted">Alertas de inventario</div>
+        <div class="h4 mt-2">@Model.Stats.Errors</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card shadow-sm">
+    <div class="card-body">
+      <h6>Órdenes de laboratorio</h6>
+
+      <form method="get" class="row g-2 mt-1 mb-2">
+        <div class="col-md-4">
+          <label for="order-search" class="visually-hidden">Filtrar órdenes</label>
+          <input id="order-search" type="text" name="orderSearch" value="@Model.OrderSearch" class="form-control" placeholder="Filtrar por paciente o prueba" />
+        </div>
+        <div class="col-md-3">
+          <label for="order-status" class="visually-hidden">Estado de la orden</label>
+          <select id="order-status" name="orderStatus" class="form-select">
+            <option value="" selected="@string.IsNullOrWhiteSpace(Model.OrderStatus)">Todos los estados</option>
+            <option value="Requested" selected="@(Model.OrderStatus == "Requested")">Solicitado</option>
+            <option value="Reported" selected="@(Model.OrderStatus == "Reported")">Reportado</option>
+            <option value="Validated" selected="@(Model.OrderStatus == "Validated")">Validado</option>
+          </select>
+        </div>
+        <div class="col-md-2">
+          <label for="order-page-size" class="visually-hidden">Tamaño de página</label>
+          <select id="order-page-size" name="orderPageSize" class="form-select">
+            <option value="5" selected="@(Model.OrderPageSize == 5)">5</option>
+            <option value="10" selected="@(Model.OrderPageSize == 10)">10</option>
+            <option value="20" selected="@(Model.OrderPageSize == 20)">20</option>
+          </select>
+        </div>
+        <div class="col-md-2">
+          <button type="submit" class="btn btn-outline-primary w-100">Aplicar</button>
+        </div>
+        <div class="col-md-1">
+          <a class="btn btn-outline-secondary w-100" href="/app/laboratorio">X</a>
+        </div>
+      </form>
+
+      <table class="table mt-3">
+        <thead>
+          <tr><th>Paciente</th><th>Prueba</th><th>Estado</th><th>Resultados</th><th>Fecha</th><th class="text-end">Acciones</th></tr>
+        </thead>
+        <tbody>
+          @if (Model.Orders.Count == 0)
+          {
+            <tr><td colspan="6" class="text-muted">No hay órdenes registradas.</td></tr>
+          }
+          @foreach (var r in Model.Orders) {
+            <tr>
+              <td class="fw-semibold">@r.PatientName</td>
+              <td>@r.TestName</td>
+              <td>@r.Status</td>
+              <td>@r.ResultCount</td>
+              <td>@r.CreatedAt.ToLocalTime().ToString("dd/MM/yyyy HH:mm")</td>
+              <td class="text-end">
+                <button type="button" class="btn btn-sm btn-outline-primary" data-bs-toggle="collapse" data-bs-target="#result-@r.OrderId" aria-expanded="false">Registrar resultado</button>
+                @if (!r.IsValidated)
+                {
+                  <form method="post" asp-page-handler="Validate" class="d-inline ms-1">
+                    <input type="hidden" name="orderId" value="@r.OrderId" />
+                    <input type="hidden" name="orderSearch" value="@Model.OrderSearch" />
+                    <input type="hidden" name="orderStatus" value="@Model.OrderStatus" />
+                    <input type="hidden" name="orderPage" value="@Model.OrderPage" />
+                    <input type="hidden" name="orderPageSize" value="@Model.OrderPageSize" />
+                    <button type="submit" class="btn btn-sm btn-success">Validar</button>
+                  </form>
+                }
+                else
+                {
+                  <span class="badge text-bg-success ms-1">Validado</span>
+                }
+              </td>
+            </tr>
+            <tr class="collapse" id="result-@r.OrderId">
+              <td colspan="6">
+                <form method="post" asp-page-handler="SubmitResult" class="row g-2">
+                  <input type="hidden" name="orderId" value="@r.OrderId" />
+                  <input type="hidden" name="orderSearch" value="@Model.OrderSearch" />
+                  <input type="hidden" name="orderStatus" value="@Model.OrderStatus" />
+                  <input type="hidden" name="orderPage" value="@Model.OrderPage" />
+                  <input type="hidden" name="orderPageSize" value="@Model.OrderPageSize" />
+                  <div class="col-md-3">
+                    <label asp-for="Result.Analyte" class="form-label">Analito</label>
+                    <input asp-for="Result.Analyte" class="form-control" placeholder="Ej. Hemoglobina" />
+                  </div>
+                  <div class="col-md-2">
+                    <label asp-for="Result.Value" class="form-label">Valor</label>
+                    <input asp-for="Result.Value" class="form-control" />
+                  </div>
+                  <div class="col-md-2">
+                    <label asp-for="Result.Unit" class="form-label">Unidad</label>
+                    <input asp-for="Result.Unit" class="form-control" placeholder="g/dL" />
+                  </div>
+                  <div class="col-md-2">
+                    <label asp-for="Result.ReferenceRange" class="form-label">Rango</label>
+                    <input asp-for="Result.ReferenceRange" class="form-control" placeholder="12-16" />
+                  </div>
+                  <div class="col-md-3">
+                    <label asp-for="Result.Comments" class="form-label">Comentario</label>
+                    <input asp-for="Result.Comments" class="form-control" />
+                  </div>
+                  <div class="col-12 text-end">
+                    <button type="submit" class="btn btn-primary btn-sm">Guardar resultado</button>
+                  </div>
+                </form>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+
+      <div class="d-flex justify-content-between align-items-center mt-3">
+        <small class="text-muted">@Model.OrdersTotalCount resultado(s)</small>
+        <div class="d-flex align-items-center gap-2">
+          @if (Model.OrderPage > 1)
+          {
+            <a class="btn btn-sm btn-outline-secondary" href="/app/laboratorio?orderSearch=@Model.OrderSearch&orderStatus=@Model.OrderStatus&orderPage=@(Model.OrderPage - 1)&orderPageSize=@Model.OrderPageSize">Anterior</a>
+          }
+          else
+          {
+            <button class="btn btn-sm btn-outline-secondary" disabled>Anterior</button>
+          }
+
+          <small class="text-muted">Página @Model.OrderPage de @Model.OrdersTotalPages</small>
+
+          @if (Model.OrderPage < Model.OrdersTotalPages)
+          {
+            <a class="btn btn-sm btn-outline-secondary" href="/app/laboratorio?orderSearch=@Model.OrderSearch&orderStatus=@Model.OrderStatus&orderPage=@(Model.OrderPage + 1)&orderPageSize=@Model.OrderPageSize">Siguiente</a>
+          }
+          else
+          {
+            <button class="btn btn-sm btn-outline-secondary" disabled>Siguiente</button>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

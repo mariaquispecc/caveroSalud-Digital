@@ -1,0 +1,43 @@
+@page "/pharmacy/inventory"
+@model CaveroSalud.Api.Pages.Pharmacy.InventoryModel
+@{
+  ViewData["Title"] = "Inventario";
+}
+
+<div class="container py-5">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+      <h1 class="h3 mb-0">Inventario</h1>
+      <div class="small text-muted">Stock actual y alertas de reposición</div>
+    </div>
+    <a class="btn btn-outline-secondary" href="/app/farmacia">Volver al panel</a>
+  </div>
+
+  <div class="card shadow-sm">
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table table-striped align-middle mb-0">
+          <thead>
+            <tr>
+              <th>Medicamento</th>
+              <th>Unidad</th>
+              <th class="text-end">Cantidad</th>
+              <th class="text-end">Mínimo</th>
+            </tr>
+          </thead>
+          <tbody>
+            @foreach (var item in Model.Items)
+            {
+              <tr>
+                <td class="fw-semibold">@item.Name</td>
+                <td>@item.Unit</td>
+                <td class="text-end">@item.Quantity</td>
+                <td class="text-end">@item.MinThreshold</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

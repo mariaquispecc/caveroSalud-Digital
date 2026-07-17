@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 700" width="1200" height="700" role="img" aria-label="Clínica Cavero - atención integral">
+  <defs><linearGradient id="g" x1="0" x2="1" y1="0" y2="1"><stop offset="0%" stop-color="#1a73e8"/><stop offset="100%" stop-color="#0d62d0"/></linearGradient></defs>
+  <rect width="1200" height="700" fill="url(#g)" rx="24"/>
+  <g fill="#fff" font-family="Segoe UI, Roboto, Arial, sans-serif">
+    <text x="80" y="220" font-size="48" font-weight="700">Clínica Cavero</text>
+    <text x="80" y="280" font-size="28" fill-opacity="0.95">Atención integral y digital para tu comunidad</text>
+  </g>
+  <g transform="translate(750,160)"><rect x="0" y="0" width="360" height="240" rx="12" fill="#ffffff22"/><circle cx="60" cy="60" r="48" fill="#fff" opacity="0.18"/><rect x="130" y="40" width="190" height="22" rx="6" fill="#ffffff44"/><rect x="130" y="76" width="160" height="16" rx="6" fill="#ffffff33"/><rect x="130" y="106" width="120" height="16" rx="6" fill="#ffffff33"/></g>
+</svg>

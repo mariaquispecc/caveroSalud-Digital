@@ -1,0 +1,14 @@
+bin/
+obj/
+.vs/
+*.db
+*.sqlite
+*.user
+.nuget/
+*.zip
+*.log
+coverage.opencover.xml
+coverage/**
+.playwright
+node_modules/
+.env

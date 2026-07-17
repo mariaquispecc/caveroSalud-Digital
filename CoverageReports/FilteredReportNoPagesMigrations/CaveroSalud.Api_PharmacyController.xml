@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CoverageReport scope="CaveroSalud.Features.Pharmacy.Controllers.PharmacyController">
+  <Summary>
+    <Class>CaveroSalud.Features.Pharmacy.Controllers.PharmacyController</Class>
+    <Assembly>CaveroSalud.Api</Assembly>
+    <Files>
+      <File>D:\500\ClinicaCavero\src\Features\Pharmacy\Controllers\PharmacyController.cs</File>
+    </Files>
+    <Coveredlines>113</Coveredlines>
+    <Uncoveredlines>6</Uncoveredlines>
+    <Coverablelines>119</Coverablelines>
+    <Totallines>176</Totallines>
+    <Linecoverage>94.9</Linecoverage>
+    <Coveredbranches>20</Coveredbranches>
+    <Totalbranches>26</Totalbranches>
+    <Branchcoverage>76.9</Branchcoverage>
+    <Coveredmethods>6</Coveredmethods>
+    <Fullcoveredmethods>4</Fullcoveredmethods>
+    <Totalmethods>6</Totalmethods>
+    <Methodcoverage>100</Methodcoverage>
+    <Fullmethodcoverage>66.6</Fullmethodcoverage>
+  </Summary>
+  <Metrics>
+    <Element name="ctor">
+      <CrapScore>1</CrapScore>
+      <Cyclomaticcomplexity>1</Cyclomaticcomplexity>
+      <Linecoverage>100</Linecoverage>
+      <Branchcoverage>100</Branchcoverage>
+    </Element>
+    <Element name="GetPendingPrescriptions">
+      <CrapScore>1</CrapScore>
+      <Cyclomaticcomplexity>1</Cyclomaticcomplexity>
+      <Linecoverage>100</Linecoverage>
+      <Branchcoverage>100</Branchcoverage>
+    </Element>
+    <Element name="GetInventoryAvailability">
+      <CrapScore>1</CrapScore>
+      <Cyclomaticcomplexity>1</Cyclomaticcomplexity>
+      <Linecoverage>100</Linecoverage>
+      <Branchcoverage>100</Branchcoverage>
+    </Element>
+    <Element name="DeliverPrescription">
+      <CrapScore>12</CrapScore>
+      <Cyclomaticcomplexity>12</Cyclomaticcomplexity>
+      <Linecoverage>92.85</Linecoverage>
+      <Branchcoverage>83.33</Branchcoverage>
+    </Element>
+    <Element name="SearchPrescriptions">
+      <CrapScore>12</CrapScore>
+      <Cyclomaticcomplexity>12</Cyclomaticcomplexity>
+      <Linecoverage>91.11</Linecoverage>
+      <Branchcoverage>75.00</Branchcoverage>
+    </Element>
+    <Element name="GetUserId">
+      <CrapScore>2</CrapScore>
+      <Cyclomaticcomplexity>2</Cyclomaticcomplexity>
+      <Linecoverage>100</Linecoverage>
+      <Branchcoverage>50.0</Branchcoverage>
+    </Element>
+  </Metrics>
+  <Files>
+    <File name="D:\500\ClinicaCavero\src\Features\Pharmacy\Controllers\PharmacyController.cs">
+      <LineAnalysis line="1" visits="-1" coverage="NotCoverable" coveredbranches="" totalbranches="" content="using System;" />
+      <LineAnalysis line="2" visits="-1" coverage="NotCoverable" coveredbranches="" totalbranches="" content="using System.Linq;" />
+      <LineAnalysis line="3" visits="-1" coverage="NotCoverable" coveredbranches="" totalbranches="" content="using System.Security.Claims;" />
+      <LineAnalysis line="4" visits="-1" coverage="NotCoverable" coveredbranches="" totalbranches="" content="using System.Threading.Tasks;" />
+      <LineAnalysis line="5" visits="-1" coverage="NotCoverable" coveredbranches="" totalbranches="" content="using CaveroSalud.Domain.Entities;" />
+      <LineAnalysis line="6" visits="-1" coverage="NotCoverable" coveredbranches="" totalbranches="" content="using CaveroSalud.Features.Pharmacy.DTOs;" />
+      <LineAnalysis line="7" visits="-1" coverage="NotCoverable" coveredbranches="" totalbranches="" content="using CaveroSalud.Infrastructure.Identity;" />
+      <LineAnalysis line="8" visits="-1" coverage="NotCoverable" coveredbranches="" totalbranches="" content="using Microsoft.AspNetCore.Authorization;" />
+      <LineAnalysis line="9" visits="-1" coverage="NotCoverable" coveredbranches="" totalbranches="" content="using Microsoft.AspNetCore.Mvc;" />
+      <LineAnalysis line="10" visits="-1" coverage="NotCoverable" coveredbranches="" totalbranches="" content="using Microsoft.EntityFrameworkCore;" />
+      <LineAnalysis line="11" visits="-1" coverage="NotCoverable" coveredbranches="" totalbranches="" content="" />
+      <LineAnalysis line="12" visits="-1" coverage="NotCoverable" coveredbranches="" totalbranches="" content="namespace CaveroSalud.Features.Pharmacy.Controllers" />
+      <LineAnalysis line="13" visits="-1" coverage="NotCoverable" coveredbranches="" totalbranches="" content="{" />
+      <LineAnalysis line="14" visits="-1" coverage="NotCoverable" coveredbranches="" totalbranches="" content="    [ApiController]" />
+      <LineAnalysis line="15" visits="-1" coverage="NotCoverable" coveredbranches="" totalbranches="" content="    [Route(&quot;api/v1/pharmacy&quot;)]" />
+      <LineAnalysis line="16" visits="-1" coverage="NotCoverable" coveredbranches="" totalbranches="" content="    [Authorize(Roles = &quot;Farmacéutico&quot;)]" />
+      <LineAnalysis line="17" visits="-1" coverage="NotCoverable" coveredbranches="" totalbranches="" content="    public class PharmacyController : ControllerBase" />
+      <LineAnalysis line="18" visits="-1" coverage="NotCoverable" coveredbranches="" totalbranches="" content="    {" />
+      <LineAnalysis line="19" visits="-1" coverage="NotCoverable" coveredbranches="" totalbranches="" content="        private readonly CaveroDbContext _db;" />
+      <LineAnalysis line="20" visits="-1" coverage="NotCoverable" coveredbranches="" totalbranches="" content="" />
+      <LineAnalysis line="21" visits="107" coverage="Covered" coveredbranches="" totalbranches="" content="        public PharmacyController(CaveroDbContext db)" />
+      <LineAnalysis line="22" visits="107" coverage="Covered" coveredbranches="" totalbranches="" content="        {" />
+      <LineAnalysis line="23" visits="107" coverage="Covered" coveredbranches="" totalbranches="" content="            _db = db;" />
+      <LineAnalysis line="24" visits="107" coverage="Covered" coveredbranches="" totalbranches="" content="        }" />
+      <LineAnalysis line="25" visits="-1" coverage="NotCoverable" coveredbranches="" totalbranches="" content="" />
+      <LineAnalysis line="26" visits="-1" coverage="NotCoverable" coveredbranches="" totalbranches="" content="        [HttpGet(&quot;prescriptions/pending&quot;)]" />
+      <LineAnalysis line="27" visits="-1" coverage="NotCoverable" coveredbranches="" totalbranches="" content="        public async Task&lt;IActionResult&gt; GetPendingPrescriptions()" />
+      <LineAnalysis line="28" visits="14" coverage="Covered" coveredbranches="" totalbranches="" content="        {" />
+      <LineAnalysis line="29" visits="14" coverage="Covered" coveredbranches="" totalbranches="" content="            var prescriptions = await _db.Prescriptions" />
+      <LineAnalysis line="30" visits="14" coverage="Covered" coveredbranches="" totalbranches="" content="                .Where(p =&gt; p.Status == PrescriptionStatuses.Requested)" />
+      <LineAnalysis line="31" visits="14" coverage="Covered" coveredbranches="" totalbranches="" content="                .OrderBy(p =&gt; p.CreatedAt)" />
+      <LineAnalysis line="32" visits="14" coverage="Covered" coveredbranches="" totalbranches="" content="                .Select(p =&gt; new PendingPrescriptionDto" />
+      <LineAnalysis line="33" visits="14" coverage="Covered" coveredbranches="" totalbranches="" content="                {" />
+      <LineAnalysis line="34" visits="14" coverage="Covered" coveredbranches="" totalbranches="" content="                    Id = p.Id," />
+      <LineAnalysis line="35" visits="14" coverage="Covered" coveredbranches="" totalbranches="" content="                    AppointmentId = p.AppointmentId," />
+      <LineAnalysis line="36" visits="14" coverage="Covered" coveredbranches="" totalbranches="" content="                    PatientId = p.PatientId," />
+      <LineAnalysis line="37" visits="14" coverage="Covered" coveredbranches="" totalbranches="" content="                    DoctorId = p.DoctorId," />
+      <LineAnalysis line="38" visits="14" coverage="Covered" coveredbranches="" totalbranches="" content="                    CreatedAt = p.CreatedAt," />
+      <LineAnalysis line="39" visits="14" coverage="Covered" coveredbranches="" totalbranches="" content="                    Status = p.Status," />
+      <LineAnalysis line="40" visits="14" coverage="Covered" coveredbranches="" totalbranches="" content="                    Items = p.Items.Select(i =&gt; new PrescriptionItemDto" />
+      <LineAnalysis line="41" visits="14" coverage="Covered" coveredbranches="" totalbranches="" content="                    {" />
+      <LineAnalysis line="42" visits="14" coverage="Covered" coveredbranches="" totalbranches="" content="                        Medication = i.Medication," />
+      <LineAnalysis line="43" visits="14" coverage="Covered" coveredbranches="" totalbranches="" content="                        Dosage = i.Dosage," />
+      <LineAnalysis line="44" visits="14" coverage="Covered" coveredbranches="" totalbranches="" content="                        Quantity = i.Quantity" />
+      <LineAnalysis line="45" visits="14" coverage="Covered" coveredbranches="" totalbranches="" content="                    }).ToList()," />
+      <LineAnalysis line="46" visits="14" coverage="Covered" coveredbranches="" totalbranches="" content="                    PatientName = _db.Users.Where(u =&gt; u.Id == p.PatientId).Select(u =&gt; u.FullName).FirstOrDefault()," />
+      <LineAnalysis line="47" visits="14" coverage="Covered" coveredbranches="" totalbranches="" content="                    PatientDni = _db.Users.Where(u =&gt; u.Id == p.PatientId).Select(u =&gt; u.Dni).FirstOrDefault()" />
+      <LineAnalysis line="48" visits="14" coverage="Covered" coveredbranches="" totalbranches="" content="                })" />
+      <LineAnalysis line="49" visits="14" coverage="Covered" coveredbranches="" totalbranches="" content="                .ToListAsync();" />
+      <LineAnalysis line="50" visits="-1" coverage="NotCoverable" coveredbranches="" totalbranches="" content="" />
+      <LineAnalysis line="51" visits="14" coverage="Covered" coveredbranches="" totalbranches="" content="            return Ok(prescriptions);" />
+      <LineAnalysis line="52" visits="14" coverage="Covered" coveredbranches="" totalbranches="" content="        }" />
+      <LineAnalysis line="53" visits="-1" coverage="NotCoverable" coveredbranches="" totalbranches="" content="" />
+      <LineAnalysis line="54" visits="-1" coverage="NotCoverable" coveredbranches="" totalbranches="" content="        [HttpGet(&quot;inventory&quot;)]" />
+      <LineAnalysis line="55" visits="-1" coverage="NotCoverable" coveredbranches="" totalbranches="" content="        public async Task&lt;IActionResult&gt; GetInventoryAvailability()" />
+      <LineAnalysis line="56" visits="31" coverage="Covered" coveredbranches="" totalbranches="" content="        {" />
+      <LineAnalysis line="57" visits="31" coverage="Covered" coveredbranches="" totalbranches="" content="            var items = await _db.InventoryItems" />
+      <LineAnalysis line="58" visits="31" coverage="Covered" coveredbranches="" totalbranches="" content="                .Select(i =&gt; new InventoryAvailabilityDto" />
+      <LineAnalysis line="59" visits="31" coverage="Covered" coveredbranches="" totalbranches="" content="                {" />
+      <LineAnalysis line="60" visits="31" coverage="Covered" coveredbranches="" totalbranches="" content="                    Id = i.Id," />
+      <LineAnalysis line="61" visits="31" coverage="Covered" coveredbranches="" totalbranches="" content="                    Name = i.Name," />
+      <LineAnalysis line="62" visits="31" coverage="Covered" coveredbranches="" totalbranches="" content="                    Unit = i.Unit," />
+      <LineAnalysis line="63" visits="31" coverage="Covered" coveredbranches="" totalbranches="" content="                    Quantity = i.Quantity," />
+      <LineAnalysis line="64" visits="31" coverage="Covered" coveredbranches="" totalbranches="" content="                    MinThreshold = i.MinThreshold," />
+      <LineAnalysis line="65" visits="31" coverage="Covered" coveredbranches="" totalbranches="" content="                    IsLowStock = i.Quantity &lt;= i.MinThreshold" />
+      <LineAnalysis line="66" visits="31" coverage="Covered" coveredbranches="" totalbranches="" content="                })" />
+      <LineAnalysis line="67" visits="31" coverage="Covered" coveredbranches="" totalbranches="" content="                .ToListAsync();" />
+      <LineAnalysis line="68" visits="-1" coverage="NotCoverable" coveredbranches="" totalbranches="" content="" />
+      <LineAnalysis line="69" visits="31" coverage="Covered" coveredbranches="" totalbranches="" content="            return Ok(items);" />
+      <LineAnalysis line="70" visits="31" coverage="Covered" coveredbranches="" totalbranches="" content="        }" />
+      <LineAnalysis line="71" visits="-1" coverage="NotCoverable" coveredbranches="" totalbranches="" content="" />
+      <LineAnalysis line="72" visits="-1" coverage="NotCoverable" coveredbranches="" totalbranches="" content="        [HttpPost(&quot;prescriptions/{prescriptionId}/deliver&quot;)]" />
+      <LineAnalysis line="73" visits="-1" coverage="NotCoverable" coveredbranches="" totalbranches="" content="        public async Task&lt;IActionResult&gt; DeliverPrescription(Guid prescriptionId, [FromBody] DeliverPrescriptionDto dto)" />
+      <LineAnalysis line="74" visits="38" coverage="Covered" coveredbranches="" totalbranches="" content="        {" />
+      <LineAnalysis line="75" visits="38" coverage="Covered" coveredbranches="" totalbranches="" content="            var prescription = await _db.Prescriptions" />
+      <LineAnalysis line="76" visits="38" coverage="Covered" coveredbranches="" totalbranches="" content="                .Include(p =&gt; p.Items)" />
+      <LineAnalysis line="77" visits="38" coverage="Covered" coveredbranches="" totalbranches="" content="                .FirstOrDefaultAsync(p =&gt; p.Id == prescriptionId);" />
+      <LineAnalysis line="78" visits="-1" coverage="NotCoverable" coveredbranches="" totalbranches="" content="" />
+      <LineAnalysis line="79" visits="38" coverage="Covered" coveredbranches="2" totalbranches="2" content="            if (prescription == null)" />
+      <LineAnalysis line="80" visits="7" coverage="Covered" coveredbranches="" totalbranches="" content="            {" />
+      <LineAnalysis line="81" visits="7" coverage="Covered" coveredbranches="" totalbranches="" content="                return NotFound();" />
+      <LineAnalysis line="82" visits="-1" coverage="NotCoverable" coveredbranches="" totalbranches="" content="            }" />
+      <LineAnalysis line="83" visits="-1" coverage="NotCoverable" coveredbranches="" totalbranches="" content="" />
+      <LineAnalysis line="84" visits="31" coverage="PartiallyCovered" coveredbranches="1" totalbranches="2" content="            if (prescription.Status != PrescriptionStatuses.Requested)" />
+      <LineAnalysis line="85" visits="0" coverage="NotCovered" coveredbranches="" totalbranches="" content="            {" />
+      <LineAnalysis line="86" visits="0" coverage="NotCovered" coveredbranches="" totalbranches="" content="                return BadRequest(&quot;Prescription is not pending delivery.&quot;);" />
+      <LineAnalysis line="87" visits="-1" coverage="NotCoverable" coveredbranches="" totalbranches="" content="            }" />
+      <LineAnalysis line="88" visits="-1" coverage="NotCoverable" coveredbranches="" totalbranches="" content="" />
+      <LineAnalysis line="89" visits="138" coverage="Covered" coveredbranches="2" totalbranches="2" content="            foreach (var item in prescription.Items)" />
+      <LineAnalysis line="90" visits="31" coverage="Covered" coveredbranches="" totalbranches="" content="            {" />
+      <LineAnalysis line="91" visits="31" coverage="Covered" coveredbranches="" totalbranches="" content="                var inventoryItem = await _db.InventoryItems.FirstOrDefaultAsync(i =&gt; i.Name == item.Medication);" />
+      <LineAnalysis line="92" visits="31" coverage="Covered" coveredbranches="2" totalbranches="2" content="                if (inventoryItem == null)" />
+      <LineAnalysis line="93" visits="7" coverage="Covered" coveredbranches="" totalbranches="" content="                {" />
+      <LineAnalysis line="94" visits="7" coverage="Covered" coveredbranches="" totalbranches="" content="                    return BadRequest($&quot;Inventory item not found for medication '{item.Medication}'.&quot;);" />
+      <LineAnalysis line="95" visits="-1" coverage="NotCoverable" coveredbranches="" totalbranches="" content="                }" />
+      <LineAnalysis line="96" visits="-1" coverage="NotCoverable" coveredbranches="" totalbranches="" content="" />
+      <LineAnalysis line="97" visits="24" coverage="Covered" coveredbranches="2" totalbranches="2" content="                if (inventoryItem.Quantity &lt; item.Quantity)" />
+      <LineAnalysis line="98" visits="10" coverage="Covered" coveredbranches="" totalbranches="" content="                {" />
+      <LineAnalysis line="99" visits="10" coverage="Covered" coveredbranches="" totalbranches="" content="                    return BadRequest($&quot;Insufficient stock for '{item.Medication}'. Available: {inventoryItem.Quantity}, requested: {item.Quantity}.&quot;);" />
+      <LineAnalysis line="100" visits="-1" coverage="NotCoverable" coveredbranches="" totalbranches="" content="                }" />
+      <LineAnalysis line="101" visits="-1" coverage="NotCoverable" coveredbranches="" totalbranches="" content="" />
+      <LineAnalysis line="102" visits="14" coverage="Covered" coveredbranches="" totalbranches="" content="                inventoryItem.Quantity -= item.Quantity;" />
+      <LineAnalysis line="103" visits="14" coverage="Covered" coveredbranches="" totalbranches="" content="            }" />
+      <LineAnalysis line="104" visits="-1" coverage="NotCoverable" coveredbranches="" totalbranches="" content="" />
+      <LineAnalysis line="105" visits="14" coverage="Covered" coveredbranches="" totalbranches="" content="            prescription.Status = PrescriptionStatuses.Delivered;" />
+      <LineAnalysis line="106" visits="14" coverage="Covered" coveredbranches="" totalbranches="" content="            prescription.DeliveredById = GetUserId();" />
+      <LineAnalysis line="107" visits="14" coverage="Covered" coveredbranches="" totalbranches="" content="            prescription.DeliveredAt = DateTime.UtcNow;" />
+      <LineAnalysis line="108" visits="14" coverage="PartiallyCovered" coveredbranches="1" totalbranches="2" content="            prescription.DeliveryNotes = dto?.DeliveryNotes;" />
+      <LineAnalysis line="109" visits="-1" coverage="NotCoverable" coveredbranches="" totalbranches="" content="" />
+      <LineAnalysis line="110" visits="14" coverage="Covered" coveredbranches="" totalbranches="" content="            await _db.SaveChangesAsync();" />
+      <LineAnalysis line="111" visits="14" coverage="Covered" coveredbranches="" totalbranches="" content="            return Ok(new { message = &quot;Prescription delivered successfully.&quot; });" />
+      <LineAnalysis line="112" visits="38" coverage="Covered" coveredbranches="" totalbranches="" content="        }" />
+      <LineAnalysis line="113" visits="-1" coverage="NotCoverable" coveredbranches="" totalbranches="" content="" />
+      <LineAnalysis line="114" visits="-1" coverage="NotCoverable" coveredbranches="" totalbranches="" content="        [HttpGet(&quot;prescriptions/search&quot;)]" />
+      <LineAnalysis line="115" visits="-1" coverage="NotCoverable" coveredbranches="" totalbranches="" content="        public async Task&lt;IActionResult&gt; SearchPrescriptions([FromQuery] string dni, [FromQuery] string consultationNumber)" />
+      <LineAnalysis line="116" visits="13" coverage="Covered" coveredbranches="" totalbranches="" content="        {" />
+      <LineAnalysis line="117" visits="13" coverage="PartiallyCovered" coveredbranches="2" totalbranches="4" content="            if (string.IsNullOrWhiteSpace(dni) &amp;&amp; string.IsNullOrWhiteSpace(consultationNumber))" />
+      <LineAnalysis line="118" visits="0" coverage="NotCovered" coveredbranches="" totalbranches="" content="            {" />
+      <LineAnalysis line="119" visits="0" coverage="NotCovered" coveredbranches="" totalbranches="" content="                return BadRequest(&quot;Search requires patient DNI or consultation number.&quot;);" />
+      <LineAnalysis line="120" visits="-1" coverage="NotCoverable" coveredbranches="" totalbranches="" content="            }" />
+      <LineAnalysis line="121" visits="-1" coverage="NotCoverable" coveredbranches="" totalbranches="" content="" />
+      <LineAnalysis line="122" visits="13" coverage="Covered" coveredbranches="" totalbranches="" content="            Guid? appointmentId = null;" />
+      <LineAnalysis line="123" visits="13" coverage="Covered" coveredbranches="2" totalbranches="2" content="            if (!string.IsNullOrWhiteSpace(consultationNumber))" />
+      <LineAnalysis line="124" visits="13" coverage="Covered" coveredbranches="" totalbranches="" content="            {" />
+      <LineAnalysis line="125" visits="13" coverage="PartiallyCovered" coveredbranches="1" totalbranches="2" content="                if (Guid.TryParse(consultationNumber, out var parsedId))" />
+      <LineAnalysis line="126" visits="13" coverage="Covered" coveredbranches="" totalbranches="" content="                {" />
+      <LineAnalysis line="127" visits="13" coverage="Covered" coveredbranches="" totalbranches="" content="                    appointmentId = parsedId;" />
+      <LineAnalysis line="128" visits="13" coverage="Covered" coveredbranches="" totalbranches="" content="                }" />
+      <LineAnalysis line="129" visits="-1" coverage="NotCoverable" coveredbranches="" totalbranches="" content="                else" />
+      <LineAnalysis line="130" visits="0" coverage="NotCovered" coveredbranches="" totalbranches="" content="                {" />
+      <LineAnalysis line="131" visits="0" coverage="NotCovered" coveredbranches="" totalbranches="" content="                    return BadRequest(&quot;Consultation number must be a valid appointment GUID.&quot;);" />
+      <LineAnalysis line="132" visits="-1" coverage="NotCoverable" coveredbranches="" totalbranches="" content="                }" />
+      <LineAnalysis line="133" visits="13" coverage="Covered" coveredbranches="" totalbranches="" content="            }" />
+      <LineAnalysis line="134" visits="-1" coverage="NotCoverable" coveredbranches="" totalbranches="" content="" />
+      <LineAnalysis line="135" visits="13" coverage="Covered" coveredbranches="" totalbranches="" content="            var query = _db.Prescriptions.AsQueryable();" />
+      <LineAnalysis line="136" visits="13" coverage="Covered" coveredbranches="2" totalbranches="2" content="            if (!string.IsNullOrWhiteSpace(dni))" />
+      <LineAnalysis line="137" visits="13" coverage="Covered" coveredbranches="" totalbranches="" content="            {" />
+      <LineAnalysis line="138" visits="13" coverage="Covered" coveredbranches="" totalbranches="" content="                query = query.Where(p =&gt; _db.Users.Any(u =&gt; u.Id == p.PatientId &amp;&amp; u.Dni == dni));" />
+      <LineAnalysis line="139" visits="13" coverage="Covered" coveredbranches="" totalbranches="" content="            }" />
+      <LineAnalysis line="140" visits="-1" coverage="NotCoverable" coveredbranches="" totalbranches="" content="" />
+      <LineAnalysis line="141" visits="13" coverage="Covered" coveredbranches="2" totalbranches="2" content="            if (appointmentId.HasValue)" />
+      <LineAnalysis line="142" visits="13" coverage="Covered" coveredbranches="" totalbranches="" content="            {" />
+      <LineAnalysis line="143" visits="13" coverage="Covered" coveredbranches="" totalbranches="" content="                query = query.Where(p =&gt; p.AppointmentId == appointmentId.Value);" />
+      <LineAnalysis line="144" visits="13" coverage="Covered" coveredbranches="" totalbranches="" content="            }" />
+      <LineAnalysis line="145" visits="-1" coverage="NotCoverable" coveredbranches="" totalbranches="" content="" />
+      <LineAnalysis line="146" visits="13" coverage="Covered" coveredbranches="" totalbranches="" content="            var results = await query" />
+      <LineAnalysis line="147" visits="13" coverage="Covered" coveredbranches="" totalbranches="" content="                .OrderByDescending(p =&gt; p.CreatedAt)" />
+      <LineAnalysis line="148" visits="13" coverage="Covered" coveredbranches="" totalbranches="" content="                .Select(p =&gt; new PendingPrescriptionDto" />
+      <LineAnalysis line="149" visits="13" coverage="Covered" coveredbranches="" totalbranches="" content="                {" />
+      <LineAnalysis line="150" visits="13" coverage="Covered" coveredbranches="" totalbranches="" content="                    Id = p.Id," />
+      <LineAnalysis line="151" visits="13" coverage="Covered" coveredbranches="" totalbranches="" content="                    AppointmentId = p.AppointmentId," />
+      <LineAnalysis line="152" visits="13" coverage="Covered" coveredbranches="" totalbranches="" content="                    PatientId = p.PatientId," />
+      <LineAnalysis line="153" visits="13" coverage="Covered" coveredbranches="" totalbranches="" content="                    DoctorId = p.DoctorId," />
+      <LineAnalysis line="154" visits="13" coverage="Covered" coveredbranches="" totalbranches="" content="                    CreatedAt = p.CreatedAt," />
+      <LineAnalysis line="155" visits="13" coverage="Covered" coveredbranches="" totalbranches="" content="                    Status = p.Status," />
+      <LineAnalysis line="156" visits="13" coverage="Covered" coveredbranches="" totalbranches="" content="                    Items = p.Items.Select(i =&gt; new PrescriptionItemDto" />
+      <LineAnalysis line="157" visits="13" coverage="Covered" coveredbranches="" totalbranches="" content="                    {" />
+      <LineAnalysis line="158" visits="13" coverage="Covered" coveredbranches="" totalbranches="" content="                        Medication = i.Medication," />
+      <LineAnalysis line="159" visits="13" coverage="Covered" coveredbranches="" totalbranches="" content="                        Dosage = i.Dosage," />
+      <LineAnalysis line="160" visits="13" coverage="Covered" coveredbranches="" totalbranches="" content="                        Quantity = i.Quantity" />
+      <LineAnalysis line="161" visits="13" coverage="Covered" coveredbranches="" totalbranches="" content="                    }).ToList()," />
+      <LineAnalysis line="162" visits="13" coverage="Covered" coveredbranches="" totalbranches="" content="                    PatientName = _db.Users.Where(u =&gt; u.Id == p.PatientId).Select(u =&gt; u.FullName).FirstOrDefault()," />
+      <LineAnalysis line="163" visits="13" coverage="Covered" coveredbranches="" totalbranches="" content="                    PatientDni = _db.Users.Where(u =&gt; u.Id == p.PatientId).Select(u =&gt; u.Dni).FirstOrDefault()" />
+      <LineAnalysis line="164" visits="13" coverage="Covered" coveredbranches="" totalbranches="" content="                })" />
+      <LineAnalysis line="165" visits="13" coverage="Covered" coveredbranches="" totalbranches="" content="                .ToListAsync();" />
+      <LineAnalysis line="166" visits="-1" coverage="NotCoverable" coveredbranches="" totalbranches="" content="" />
+      <LineAnalysis line="167" visits="13" coverage="Covered" coveredbranches="" totalbranches="" content="            return Ok(results);" />
+      <LineAnalysis line="168" visits="13" coverage="Covered" coveredbranches="" totalbranches="" content="        }" />
+      <LineAnalysis line="169" visits="-1" coverage="NotCoverable" coveredbranches="" totalbranches="" content="" />
+      <LineAnalysis line="170" visits="-1" coverage="NotCoverable" coveredbranches="" totalbranches="" content="        private Guid GetUserId()" />
+      <LineAnalysis line="171" visits="14" coverage="Covered" coveredbranches="" totalbranches="" content="        {" />
+      <LineAnalysis line="172" visits="14" coverage="PartiallyCovered" coveredbranches="1" totalbranches="2" content="            var sub = User.FindFirstValue(ClaimTypes.NameIdentifier) ?? User.FindFirstValue(&quot;sub&quot;);" />
+      <LineAnalysis line="173" visits="14" coverage="Covered" coveredbranches="" totalbranches="" content="            return Guid.Parse(sub);" />
+      <LineAnalysis line="174" visits="14" coverage="Covered" coveredbranches="" totalbranches="" content="        }" />
+      <LineAnalysis line="175" visits="-1" coverage="NotCoverable" coveredbranches="" totalbranches="" content="    }" />
+      <LineAnalysis line="176" visits="-1" coverage="NotCoverable" coveredbranches="" totalbranches="" content="}" />
+    </File>
+  </Files>
+</CoverageReport>

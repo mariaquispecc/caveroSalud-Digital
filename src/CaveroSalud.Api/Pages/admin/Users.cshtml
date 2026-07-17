@@ -1,0 +1,49 @@
+@page "/admin/users"
+@model CaveroSalud.Api.Pages.Admin.UsersModel
+@{
+  ViewData["Title"] = "Gestión de usuarios";
+}
+
+<div class="container py-5">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+      <h1 class="h3 mb-0">Gestión de usuarios</h1>
+      <div class="small text-muted">Listado rápido de cuentas registradas</div>
+    </div>
+    <a class="btn btn-outline-secondary" href="/app/admin">Volver al panel</a>
+  </div>
+
+  <div class="card shadow-sm">
+    <div class="card-body">
+      <div class="row g-3 mb-4">
+        <div class="col-md-4"><div class="p-3 border rounded-3"><div class="small text-muted">Total de usuarios</div><div class="h4 mb-0">@Model.TotalUsers</div></div></div>
+        <div class="col-md-4"><div class="p-3 border rounded-3"><div class="small text-muted">Pacientes</div><div class="h4 mb-0">@Model.PatientUsers</div></div></div>
+        <div class="col-md-4"><div class="p-3 border rounded-3"><div class="small text-muted">Profesionales</div><div class="h4 mb-0">@Model.StaffUsers</div></div></div>
+      </div>
+
+      <div class="table-responsive">
+        <table class="table table-striped align-middle mb-0">
+          <thead>
+            <tr>
+              <th>Nombre</th>
+              <th>Correo</th>
+              <th>Teléfono</th>
+              <th>Rol principal</th>
+            </tr>
+          </thead>
+          <tbody>
+            @foreach (var user in Model.Users)
+            {
+              <tr>
+                <td class="fw-semibold">@user.FullName</td>
+                <td>@user.Email</td>
+                <td>@user.Phone</td>
+                <td>@user.PrimaryRole</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

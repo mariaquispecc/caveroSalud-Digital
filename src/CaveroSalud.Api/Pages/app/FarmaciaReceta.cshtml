@@ -1,0 +1,81 @@
+@page "/app/farmacia/receta/{prescriptionId:guid}"
+@model CaveroSalud.Api.Pages.App.FarmaciaRecetaModel
+@{
+  ViewData["Title"] = "Detalle de receta";
+}
+
+<div class="container py-5">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+      <h1 class="h3 mb-0">Detalle de receta</h1>
+      <div class="small text-muted">Información de dispensación y medicamentos</div>
+    </div>
+    <a class="btn btn-outline-secondary" asp-page="/app/Farmacia">Volver</a>
+  </div>
+
+  <div class="row g-3 mb-4">
+    <div class="col-md-4">
+      <div class="card shadow-sm h-100">
+        <div class="card-body">
+          <div class="small text-muted">Paciente</div>
+          <div class="fw-semibold">@Model.Detail.PatientName</div>
+          <div class="small text-muted mt-3">Médico</div>
+          <div>@Model.Detail.DoctorName</div>
+          <div class="small text-muted mt-3">Estado</div>
+          <span class="badge @(Model.Detail.Status == "Delivered" ? "bg-success" : "bg-warning text-dark")">@Model.Detail.Status</span>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card shadow-sm h-100">
+        <div class="card-body">
+          <div class="small text-muted">Receta ID</div>
+          <div class="small">@Model.Detail.PrescriptionId</div>
+          <div class="small text-muted mt-3">Consulta ID</div>
+          <div class="small">@Model.Detail.AppointmentId</div>
+          <div class="small text-muted mt-3">Creada</div>
+          <div>@Model.Detail.CreatedAt.ToLocalTime().ToString("dd/MM/yyyy HH:mm")</div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card shadow-sm h-100">
+        <div class="card-body">
+          <div class="small text-muted">Despachado por</div>
+          <div>@Model.Detail.DeliveredBy</div>
+          <div class="small text-muted mt-3">Fecha de despacho</div>
+          <div>@(Model.Detail.DeliveredAt.HasValue ? Model.Detail.DeliveredAt.Value.ToLocalTime().ToString("dd/MM/yyyy HH:mm") : "Pendiente")</div>
+          <div class="small text-muted mt-3">Notas</div>
+          <div>@(string.IsNullOrWhiteSpace(Model.Detail.DeliveryNotes) ? "Sin notas" : Model.Detail.DeliveryNotes)</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card shadow-sm">
+    <div class="card-body">
+      <h6 class="mb-3">Medicamentos de la receta</h6>
+      <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0">
+          <thead class="table-light">
+            <tr>
+              <th>Medicamento</th>
+              <th>Dosis</th>
+              <th class="text-end">Cantidad</th>
+            </tr>
+          </thead>
+          <tbody>
+            @foreach (var item in Model.Detail.Items)
+            {
+              <tr>
+                <td class="fw-semibold">@item.Medication</td>
+                <td>@item.Dosage</td>
+                <td class="text-end">@item.Quantity</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

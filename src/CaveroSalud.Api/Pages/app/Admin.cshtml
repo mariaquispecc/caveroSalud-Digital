@@ -1,0 +1,187 @@
+@page "/app/admin"
+@model CaveroSalud.Api.Pages.App.AdminModel
+@using Microsoft.AspNetCore.Authorization
+@{
+  ViewData["Title"] = "Panel de administrador";
+}
+<div class="container py-5">
+  @if (!string.IsNullOrWhiteSpace(Model.StatusMessage))
+  {
+    <div class="alert alert-success" role="alert">@Model.StatusMessage</div>
+  }
+  @if (!string.IsNullOrWhiteSpace(Model.ErrorMessage))
+  {
+    <div class="alert alert-danger" role="alert">@Model.ErrorMessage</div>
+  }
+  @if (!string.IsNullOrWhiteSpace(Model.NotificationDetailTitle))
+  {
+    <div class="alert alert-info" role="alert">
+      <div class="fw-semibold">@Model.NotificationDetailTitle</div>
+      <div>@Model.NotificationDetailBody</div>
+    </div>
+  }
+
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="h3">Panel de administrador</h1>
+    <div class="text-end d-flex align-items-center gap-2">
+      <button class="btn btn-outline-primary btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#notificacionesAdmin" aria-expanded="false" title="Notificaciones">
+        <i class="fa-regular fa-bell"></i>
+      </button>
+      <div>
+      <div class="fw-semibold">@Model.UserFullName</div>
+      <small class="text-muted">@string.Join(", ", Model.Roles)</small>
+      </div>
+    </div>
+  </div>
+
+  <div id="notificacionesAdmin" class="collapse mb-4">
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <h6 class="card-title">Notificaciones</h6>
+        <ul class="list-group list-group-flush mt-2">
+          @foreach (var n in Model.Notifications)
+          {
+            <li class="list-group-item d-flex justify-content-between align-items-start">
+              <div>
+                <div class="fw-semibold">@n.Message</div>
+                <div class="small text-muted">@n.When</div>
+              </div>
+              <div class="d-flex align-items-center gap-2">
+                @if (n.Id.HasValue)
+                {
+                  <form method="post" asp-page-handler="ViewNotification" class="d-inline">
+                    <input type="hidden" name="id" value="@n.Id" />
+                    <button type="submit" class="btn btn-sm @(n.IsRead ? "btn-outline-secondary" : "btn-outline-primary")">Ver detalle</button>
+                  </form>
+                }
+                <span class="badge @(n.Type == "warning" ? "text-bg-warning" : n.Type == "success" ? "text-bg-success" : "text-bg-primary")">@n.Type</span>
+              </div>
+            </li>
+          }
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="row g-3 mb-4">
+    <div class="col-md-3">
+      <div class="card shadow-sm p-3 h-100">
+        <div class="d-flex align-items-center">
+          <div class="me-3 display-6 text-primary">👥</div>
+          <div>
+            <div class="small text-muted">Usuarios</div>
+            <div class="h5 mb-0">@Model.Stats.UsersCount</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card shadow-sm p-3 h-100">
+        <div class="d-flex align-items-center">
+          <div class="me-3 display-6 text-success">📅</div>
+          <div>
+            <div class="small text-muted">Citas hoy</div>
+            <div class="h5 mb-0">@Model.Stats.TodayAppointments</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card shadow-sm p-3 h-100">
+        <div class="d-flex align-items-center">
+          <div class="me-3 display-6 text-warning">💬</div>
+          <div>
+            <div class="small text-muted">Mensajes</div>
+            <div class="h5 mb-0">@Model.Stats.Messages</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card shadow-sm p-3 h-100">
+        <div class="d-flex align-items-center">
+          <div class="me-3 display-6 text-danger">⚠️</div>
+          <div>
+            <div class="small text-muted">Alertas</div>
+            <div class="h5 mb-0">@Model.Stats.Alerts</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-lg-8">
+      <div class="card shadow-sm mb-3">
+        <div class="card-body">
+          <h5 class="card-title">Actividad reciente</h5>
+          <p class="text-muted">Resumen de acciones realizadas en la última hora.</p>
+          <ul class="list-group list-group-flush">
+            @foreach(var item in Model.RecentActivity) {
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                <div>
+                  <div class="fw-semibold">@item.Title</div>
+                  <div class="small text-muted">@item.Description</div>
+                </div>
+                <div class="small text-muted">@item.When</div>
+              </li>
+            }
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-4">
+      <div class="card shadow-sm mb-3">
+        <div class="card-body">
+          <h6 class="card-title">Acciones rápidas</h6>
+          <div class="d-grid gap-2">
+            <a class="btn btn-outline-primary" href="/app/admin/users">Gestionar usuarios</a>
+            <a class="btn btn-outline-secondary" href="/app/admin/settings">Configuración del sitio</a>
+            <a class="btn btn-outline-dark" href="/app/admin/specialities">Sección especialidades</a>
+            <a class="btn btn-outline-success" href="/app/admin/reports">Generar informe</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="card shadow-sm mb-3">
+        <div class="card-body">
+          <h6 class="card-title">Mensajería a usuarios</h6>
+          <form method="post" asp-page-handler="SendMessage" class="vstack gap-2 mt-2">
+            <div>
+              <label asp-for="MessageForm.Target" class="form-label">Destino</label>
+              <select asp-for="MessageForm.Target" class="form-select">
+                <option value="all">Todos los usuarios</option>
+                <option value="role">Por rol</option>
+                <option value="user">Por correo</option>
+              </select>
+            </div>
+            <div>
+              <label asp-for="MessageForm.TargetRole" class="form-label">Rol</label>
+              <select asp-for="MessageForm.TargetRole" class="form-select">
+                <option value="">Seleccione rol</option>
+                @foreach (var role in Model.AvailableTargetRoles)
+                {
+                  <option value="@role">@role</option>
+                }
+              </select>
+            </div>
+            <div>
+              <label asp-for="MessageForm.TargetEmail" class="form-label">Correo destino</label>
+              <input asp-for="MessageForm.TargetEmail" class="form-control" placeholder="usuario@correo.com" />
+            </div>
+            <div>
+              <label asp-for="MessageForm.Title" class="form-label">Título</label>
+              <input asp-for="MessageForm.Title" class="form-control" />
+            </div>
+            <div>
+              <label asp-for="MessageForm.Body" class="form-label">Mensaje</label>
+              <textarea asp-for="MessageForm.Body" class="form-control" rows="3"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Enviar mensaje</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

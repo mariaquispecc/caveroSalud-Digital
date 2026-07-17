@@ -1,0 +1,324 @@
+@page "/app/medico"
+@model CaveroSalud.Api.Pages.App.MedicoModel
+@{
+  ViewData["Title"] = "Panel médico";
+}
+<div class="container py-5">
+  @if (!string.IsNullOrWhiteSpace(Model.StatusMessage))
+  {
+    <div class="alert alert-success" role="alert">@Model.StatusMessage</div>
+  }
+  @if (!string.IsNullOrWhiteSpace(Model.ErrorMessage))
+  {
+    <div class="alert alert-danger" role="alert">@Model.ErrorMessage</div>
+  }
+  @if (!string.IsNullOrWhiteSpace(Model.NotificationDetailTitle))
+  {
+    <div class="alert alert-info" role="alert">
+      <div class="fw-semibold">@Model.NotificationDetailTitle</div>
+      <div>@Model.NotificationDetailBody</div>
+    </div>
+  }
+
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="h3">Panel médico</h1>
+    <div class="text-end d-flex align-items-center gap-2">
+      <button class="btn btn-outline-primary btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#notificacionesMedico" aria-expanded="false" title="Notificaciones">
+        <i class="fa-regular fa-bell"></i>
+      </button>
+      <button class="btn btn-outline-secondary btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#cuentaMedico" aria-expanded="false" title="Mi cuenta">
+        <i class="fa-regular fa-user"></i>
+      </button>
+      <div>
+      <div class="fw-semibold">@Model.UserFullName</div>
+      <small class="text-muted">Médico</small>
+      </div>
+    </div>
+  </div>
+
+  <div id="notificacionesMedico" class="collapse mb-4">
+    <div class="card shadow-sm h-100">
+      <div class="card-body">
+        <h6 class="mb-3">Notificaciones</h6>
+        <ul class="list-group list-group-flush">
+          @foreach (var n in Model.Notifications)
+          {
+            <li class="list-group-item d-flex justify-content-between align-items-start">
+              <div>
+                <div class="fw-semibold">@n.Message</div>
+                <div class="small text-muted">@n.When</div>
+              </div>
+              <div class="d-flex align-items-center gap-2">
+                @if (n.Id.HasValue)
+                {
+                  <form method="post" asp-page-handler="ViewNotification" class="d-inline">
+                    <input type="hidden" name="id" value="@n.Id" />
+                    <input type="hidden" name="showAllAgenda" value="@Model.ShowAllAgenda" />
+                    <input type="hidden" name="historyPatientId" value="@Model.HistoryPatientId" />
+                    <input type="hidden" name="agendaSearch" value="@Model.AgendaSearch" />
+                    <input type="hidden" name="agendaPage" value="@Model.AgendaPage" />
+                    <input type="hidden" name="agendaPageSize" value="@Model.AgendaPageSize" />
+                    <button type="submit" class="btn btn-sm @(n.IsRead ? "btn-outline-secondary" : "btn-outline-primary")">Ver detalle</button>
+                  </form>
+                }
+                <span class="badge @(n.Type == "warning" ? "text-bg-warning" : n.Type == "success" ? "text-bg-success" : "text-bg-primary")">@n.Type</span>
+              </div>
+            </li>
+          }
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div id="cuentaMedico" class="collapse mb-4">
+    <div class="card shadow-sm h-100">
+      <div class="card-body">
+        <h6 class="mb-3">Gestionar mi cuenta</h6>
+        <form method="post" asp-page-handler="UpdateAccount" class="vstack gap-3">
+          <input type="hidden" name="showAllAgenda" value="@Model.ShowAllAgenda" />
+          <input type="hidden" name="historyPatientId" value="@Model.HistoryPatientId" />
+          <input type="hidden" name="agendaSearch" value="@Model.AgendaSearch" />
+          <input type="hidden" name="agendaPage" value="@Model.AgendaPage" />
+          <input type="hidden" name="agendaPageSize" value="@Model.AgendaPageSize" />
+          <div>
+            <label asp-for="Account.FullName" class="form-label">Nombre completo</label>
+            <input asp-for="Account.FullName" class="form-control" />
+          </div>
+          <div>
+            <label asp-for="Account.Email" class="form-label">Correo</label>
+            <input asp-for="Account.Email" type="email" class="form-control" />
+          </div>
+          <div>
+            <label asp-for="Account.Phone" class="form-label">Teléfono</label>
+            <input asp-for="Account.Phone" class="form-control" />
+          </div>
+          <div>
+            <label asp-for="Account.Dni" class="form-label">DNI</label>
+            <input asp-for="Account.Dni" class="form-control" />
+          </div>
+          <div>
+            <label asp-for="Account.CurrentPassword" class="form-label">Contraseña actual</label>
+            <input asp-for="Account.CurrentPassword" type="password" class="form-control" placeholder="Déjala vacía si no deseas cambiarla" />
+          </div>
+          <div>
+            <label asp-for="Account.NewPassword" class="form-label">Nueva contraseña</label>
+            <input asp-for="Account.NewPassword" type="password" class="form-control" />
+          </div>
+          <div>
+            <label asp-for="Account.ConfirmPassword" class="form-label">Confirmar nueva contraseña</label>
+            <input asp-for="Account.ConfirmPassword" type="password" class="form-control" />
+          </div>
+          <div>
+            <button type="submit" class="btn btn-outline-primary">Guardar cambios</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div class="row g-3 mb-4">
+    <div class="col-md-4">
+      <div class="card p-3 shadow-sm">
+        <div class="small text-muted">Citas hoy</div>
+        <div class="h4 mt-2">@Model.Stats.TodayAppointments</div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card p-3 shadow-sm">
+        <div class="small text-muted">Pacientes asignados</div>
+        <div class="h4 mt-2">@Model.Stats.AssignedPatients</div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card p-3 shadow-sm">
+        <div class="small text-muted">Urgentes</div>
+        <div class="h4 mt-2">@Model.Stats.Urgent</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card shadow-sm">
+    <div class="card-body">
+      <div class="d-flex justify-content-between align-items-center mb-2">
+        <h6 class="mb-0">Agenda médica</h6>
+        @if (Model.ShowAllAgenda)
+        {
+          <a class="btn btn-sm btn-outline-secondary" href="/app/medico">Ver resumen</a>
+        }
+        else
+        {
+          <a class="btn btn-sm btn-primary" href="/app/medico?showAllAgenda=true">Ver agenda completa</a>
+        }
+      </div>
+
+      <form method="get" class="row g-2 mt-1 mb-2">
+        <input type="hidden" name="showAllAgenda" value="@(Model.ShowAllAgenda ? "true" : "false")" />
+        <input type="hidden" name="historyPatientId" value="@Model.HistoryPatientId" />
+        <div class="col-md-6">
+          <label for="agenda-search" class="visually-hidden">Filtrar agenda</label>
+          <input id="agenda-search" type="text" name="agendaSearch" value="@Model.AgendaSearch" class="form-control" placeholder="Filtrar por paciente o especialidad" />
+        </div>
+        <div class="col-md-2">
+          <label for="agenda-page-size" class="visually-hidden">Tamaño de página</label>
+          <select id="agenda-page-size" name="agendaPageSize" class="form-select">
+            <option value="5" selected="@(Model.AgendaPageSize == 5)">5</option>
+            <option value="10" selected="@(Model.AgendaPageSize == 10)">10</option>
+            <option value="20" selected="@(Model.AgendaPageSize == 20)">20</option>
+          </select>
+        </div>
+        <div class="col-md-2">
+          <button type="submit" class="btn btn-outline-primary w-100">Aplicar</button>
+        </div>
+        <div class="col-md-2">
+          <a class="btn btn-outline-secondary w-100" href="/app/medico?showAllAgenda=@Model.ShowAllAgenda">Limpiar</a>
+        </div>
+      </form>
+
+      <div class="table-responsive mt-3">
+        <table class="table table-striped align-middle mb-0">
+          <thead>
+            <tr>
+              <th>Paciente</th>
+              <th>Especialidad</th>
+              <th>Fecha y hora</th>
+              <th>Estado</th>
+              <th class="text-end">Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            @if (Model.Upcoming.Count == 0)
+            {
+              <tr><td colspan="5" class="text-muted">No hay citas programadas.</td></tr>
+            }
+            @foreach (var c in Model.Upcoming)
+            {
+              <tr>
+                <td class="fw-semibold">@c.PatientName</td>
+                <td>@c.Speciality</td>
+                <td>@c.StartAt.ToLocalTime().ToString("dd/MM/yyyy HH:mm")</td>
+                <td>@c.Status</td>
+                <td class="text-end">
+                  <a class="btn btn-sm btn-outline-secondary" href="/app/medico?showAllAgenda=@Model.ShowAllAgenda&historyPatientId=@c.PatientId&agendaSearch=@Model.AgendaSearch&agendaPage=@Model.AgendaPage&agendaPageSize=@Model.AgendaPageSize">Historia clínica</a>
+                  @if (c.CanAttend)
+                  {
+                    <button type="button" class="btn btn-sm btn-success ms-1" data-bs-toggle="collapse" data-bs-target="#attend-@c.AppointmentId" aria-expanded="false">Registrar atención</button>
+                  }
+                </td>
+              </tr>
+              @if (c.CanAttend)
+              {
+                <tr class="collapse" id="attend-@c.AppointmentId">
+                  <td colspan="5">
+                    <form method="post" asp-page-handler="Attend" class="row g-2">
+                      <input type="hidden" name="appointmentId" value="@c.AppointmentId" />
+                      <input type="hidden" name="showAllAgenda" value="@Model.ShowAllAgenda" />
+                      <input type="hidden" name="historyPatientId" value="@Model.HistoryPatientId" />
+                      <input type="hidden" name="agendaSearch" value="@Model.AgendaSearch" />
+                      <input type="hidden" name="agendaPage" value="@Model.AgendaPage" />
+                      <input type="hidden" name="agendaPageSize" value="@Model.AgendaPageSize" />
+                      <div class="col-md-6">
+                        <label asp-for="Attend.Diagnosis" class="form-label">Diagnóstico</label>
+                        <input asp-for="Attend.Diagnosis" class="form-control" />
+                      </div>
+                      <div class="col-md-6">
+                        <label asp-for="Attend.Treatment" class="form-label">Tratamiento</label>
+                        <input asp-for="Attend.Treatment" class="form-control" />
+                      </div>
+                      <div class="col-12">
+                        <label asp-for="Attend.Observations" class="form-label">Observaciones</label>
+                        <textarea asp-for="Attend.Observations" class="form-control" rows="2"></textarea>
+                      </div>
+                      <div class="col-md-4">
+                        <label asp-for="Attend.LabTestName" class="form-label">Orden de laboratorio (opcional)</label>
+                        <input asp-for="Attend.LabTestName" class="form-control" placeholder="Ej. Hemograma" />
+                      </div>
+                      <div class="col-md-4">
+                        <label asp-for="Attend.Medication" class="form-label">Medicamento (opcional)</label>
+                        <input asp-for="Attend.Medication" class="form-control" />
+                      </div>
+                      <div class="col-md-2">
+                        <label asp-for="Attend.MedicationDosage" class="form-label">Dosis</label>
+                        <input asp-for="Attend.MedicationDosage" class="form-control" placeholder="500mg" />
+                      </div>
+                      <div class="col-md-2">
+                        <label asp-for="Attend.MedicationQuantity" class="form-label">Cantidad</label>
+                        <input asp-for="Attend.MedicationQuantity" type="number" min="1" class="form-control" />
+                      </div>
+                      <div class="col-12 text-end">
+                        <button type="submit" class="btn btn-primary btn-sm">Guardar atención</button>
+                      </div>
+                    </form>
+                  </td>
+                </tr>
+              }
+            }
+          </tbody>
+        </table>
+      </div>
+
+      <div class="d-flex justify-content-between align-items-center mt-3">
+        <small class="text-muted">@Model.AgendaTotalCount resultado(s)</small>
+        <div class="d-flex align-items-center gap-2">
+          @if (Model.AgendaPage > 1)
+          {
+            <a class="btn btn-sm btn-outline-secondary" href="/app/medico?showAllAgenda=@Model.ShowAllAgenda&historyPatientId=@Model.HistoryPatientId&agendaSearch=@Model.AgendaSearch&agendaPage=@(Model.AgendaPage - 1)&agendaPageSize=@Model.AgendaPageSize">Anterior</a>
+          }
+          else
+          {
+            <button class="btn btn-sm btn-outline-secondary" disabled>Anterior</button>
+          }
+
+          <small class="text-muted">Página @Model.AgendaPage de @Model.AgendaTotalPages</small>
+
+          @if (Model.AgendaPage < Model.AgendaTotalPages)
+          {
+            <a class="btn btn-sm btn-outline-secondary" href="/app/medico?showAllAgenda=@Model.ShowAllAgenda&historyPatientId=@Model.HistoryPatientId&agendaSearch=@Model.AgendaSearch&agendaPage=@(Model.AgendaPage + 1)&agendaPageSize=@Model.AgendaPageSize">Siguiente</a>
+          }
+          else
+          {
+            <button class="btn btn-sm btn-outline-secondary" disabled>Siguiente</button>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+
+  @if (Model.HistoryPatientId.HasValue)
+  {
+    <div class="card shadow-sm mt-4">
+      <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center">
+          <h6 class="mb-0">Historia clínica de @Model.SelectedPatientName</h6>
+          <a class="btn btn-sm btn-outline-secondary" href="/app/medico?showAllAgenda=@Model.ShowAllAgenda&agendaSearch=@Model.AgendaSearch&agendaPage=@Model.AgendaPage&agendaPageSize=@Model.AgendaPageSize">Cerrar</a>
+        </div>
+        <div class="table-responsive mt-3">
+          <table class="table table-sm align-middle mb-0">
+            <thead>
+              <tr>
+                <th>Fecha</th>
+                <th>Diagnóstico</th>
+                <th>Tratamiento</th>
+                <th>Estado</th>
+              </tr>
+            </thead>
+            <tbody>
+              @if (Model.PatientHistory.Count == 0)
+              {
+                <tr><td colspan="4" class="text-muted">Sin registros clínicos para este paciente.</td></tr>
+              }
+              @foreach (var item in Model.PatientHistory)
+              {
+                <tr>
+                  <td>@item.CreatedAt.ToLocalTime().ToString("dd/MM/yyyy HH:mm")</td>
+                  <td>@item.Diagnosis</td>
+                  <td>@item.Treatment</td>
+                  <td>@(item.IsClosed ? "Cerrado" : "Abierto")</td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  }
+</div>

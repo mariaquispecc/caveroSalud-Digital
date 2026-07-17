@@ -1,0 +1,160 @@
+@page "/app/admin/users"
+@model CaveroSalud.Api.Pages.App.AdminUsersModel
+@{
+  ViewData["Title"] = "Gestión de usuarios";
+}
+
+<div class="container py-5">
+  @if (!string.IsNullOrWhiteSpace(Model.StatusMessage))
+  {
+    <div class="alert alert-success" role="alert">@Model.StatusMessage</div>
+  }
+  @if (!string.IsNullOrWhiteSpace(Model.ErrorMessage))
+  {
+    <div class="alert alert-danger" role="alert">@Model.ErrorMessage</div>
+  }
+
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+      <h1 class="h3 mb-0">Gestión de usuarios</h1>
+      <div class="small text-muted">CRUD de usuarios con roles distintos a Paciente</div>
+    </div>
+    <a class="btn btn-outline-secondary" href="/app/admin">Volver al panel</a>
+  </div>
+
+  <div class="row g-4 mb-4">
+    <div class="col-lg-4">
+      <div class="card shadow-sm h-100">
+        <div class="card-body">
+          <h5 class="card-title mb-3">@((Model.SelectedUserId.HasValue ? "Editar usuario" : "Crear usuario"))</h5>
+          <form method="post" asp-page-handler="Save" class="vstack gap-3">
+            <input type="hidden" asp-for="SelectedUserId" />
+            <div>
+              <label asp-for="FullName" class="form-label">Nombre completo</label>
+              <input asp-for="FullName" class="form-control" />
+            </div>
+            <div>
+              <label asp-for="Dni" class="form-label">DNI</label>
+              <input asp-for="Dni" class="form-control" />
+            </div>
+            <div>
+              <label asp-for="Email" class="form-label">Correo</label>
+              <input asp-for="Email" type="email" class="form-control" />
+            </div>
+            <div>
+              <label asp-for="Phone" class="form-label">Teléfono</label>
+              <input asp-for="Phone" class="form-control" />
+            </div>
+            <div>
+              <label asp-for="Role" class="form-label">Rol</label>
+              <select asp-for="Role" asp-items="Model.RoleOptions" class="form-select" id="role-select"></select>
+            </div>
+            <div>
+              <label asp-for="Speciality" class="form-label">Especialidad</label>
+              <select asp-for="Speciality" asp-items="Model.SpecialityOptions" class="form-select" id="speciality-select">
+                <option value="">Selecciona una especialidad activa</option>
+              </select>
+              <div class="form-text">Solo se habilita para el rol médico y solo lista especialidades activas.</div>
+            </div>
+            <div>
+              <label asp-for="TemporaryPassword" class="form-label">Contraseña temporal</label>
+              <input asp-for="TemporaryPassword" class="form-control" placeholder="Solo para alta" />
+            </div>
+            <div class="form-check">
+              <input asp-for="IsActive" class="form-check-input" />
+              <label asp-for="IsActive" class="form-check-label">Usuario activo</label>
+            </div>
+            <div class="d-flex gap-2">
+              <button type="submit" class="btn btn-primary">@(Model.SelectedUserId.HasValue ? "Guardar cambios" : "Crear usuario")</button>
+              @if (Model.SelectedUserId.HasValue)
+              {
+                <a class="btn btn-outline-secondary" href="/app/admin/users">Cancelar</a>
+              }
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-8">
+      <div class="row g-3 mb-4">
+        <div class="col-md-4"><div class="p-3 border rounded-3"><div class="small text-muted">Usuarios no-paciente</div><div class="h4 mb-0">@Model.TotalUsers</div></div></div>
+        <div class="col-md-4"><div class="p-3 border rounded-3"><div class="small text-muted">Activos</div><div class="h4 mb-0">@Model.ActiveUsers</div></div></div>
+        <div class="col-md-4"><div class="p-3 border rounded-3"><div class="small text-muted">Inactivos</div><div class="h4 mb-0">@Model.InactiveUsers</div></div></div>
+      </div>
+
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table table-striped align-middle mb-0">
+              <thead>
+                <tr>
+                  <th>Nombre</th>
+                  <th>Correo</th>
+                  <th>Teléfono</th>
+                  <th>Rol</th>
+                  <th>Estado</th>
+                  <th class="text-end">Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                @foreach (var user in Model.Users)
+                {
+                  <tr>
+                    <td class="fw-semibold">@user.FullName</td>
+                    <td>@user.Email</td>
+                    <td>@user.Phone</td>
+                    <td>@user.PrimaryRole</td>
+                    <td>
+                      @if (user.IsActive)
+                      {
+                        <span class="badge text-bg-success">Activo</span>
+                      }
+                      else
+                      {
+                        <span class="badge text-bg-secondary">Inactivo</span>
+                      }
+                    </td>
+                    <td class="text-end">
+                      <a class="btn btn-sm btn-outline-primary me-2" href="/app/admin/users?editId=@user.Id">Editar</a>
+                      <form method="post" asp-page-handler="Delete" class="d-inline" onsubmit="return confirm('¿Eliminar este usuario?');">
+                        <input type="hidden" name="id" value="@user.Id" />
+                        <button type="submit" class="btn btn-sm btn-outline-danger">Eliminar</button>
+                      </form>
+                    </td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+@section Scripts {
+  <script>
+    (function () {
+      const roleSelect = document.getElementById('role-select');
+      const specialitySelect = document.getElementById('speciality-select');
+      if (!roleSelect || !specialitySelect) {
+        return;
+      }
+
+      const syncSpecialityState = () => {
+        const role = (roleSelect.value || '').toLowerCase();
+        const isMedic = role === 'medico' || role === 'médico';
+        specialitySelect.disabled = !isMedic;
+        specialitySelect.required = isMedic;
+
+        if (!isMedic) {
+          specialitySelect.value = '';
+        }
+      };
+
+      roleSelect.addEventListener('change', syncSpecialityState);
+      syncSpecialityState();
+    })();
+  </script>
+}

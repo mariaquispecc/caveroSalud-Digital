@@ -1,0 +1,43 @@
+@page "/register"
+@model CaveroSalud.Api.Pages.RegisterModel
+@{
+  ViewData["Title"] = "Registro";
+}
+<div class="row justify-content-center">
+  <div class="col-lg-6">
+    <div class="card shadow-sm rounded-4">
+      <div class="card-body p-5">
+        <h1 class="h3 mb-4">Registro de paciente</h1>
+        <p class="text-muted">Crea tu cuenta para agendar tu primera cita con nuestros especialistas.</p>
+        <form method="post">
+          @Html.AntiForgeryToken()
+          <div class="mb-3">
+            <label for="fullName" class="form-label">Nombre completo</label>
+            <input asp-for="FullName" class="form-control" id="fullName" />
+            <span asp-validation-for="FullName" class="text-danger small"></span>
+          </div>
+          <div class="mb-3">
+            <label for="email" class="form-label">Correo electrónico</label>
+            <input asp-for="Email" class="form-control" id="email" />
+            <span asp-validation-for="Email" class="text-danger small"></span>
+          </div>
+          <div class="mb-3">
+            <label for="password" class="form-label">Contraseña</label>
+            <input asp-for="Password" class="form-control" id="password" />
+            <span asp-validation-for="Password" class="text-danger small"></span>
+          </div>
+          <div class="mb-4">
+            <label for="phone" class="form-label">Teléfono</label>
+            <input asp-for="Phone" class="form-control" id="phone" />
+            <span asp-validation-for="Phone" class="text-danger small"></span>
+          </div>
+          <button type="submit" class="btn btn-primary w-100">Crear cuenta</button>
+        </form>
+        <div class="text-center mt-4">
+          <span class="text-muted">¿Ya tienes cuenta?</span>
+          <a href="/login">Inicia sesión</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

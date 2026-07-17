@@ -1,0 +1,58 @@
+@page "/app/paciente/historial"
+@model CaveroSalud.Api.Pages.App.PacienteHistorialModel
+@{
+  ViewData["Title"] = "Historial médico";
+}
+
+<div class="container py-5">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="h3 mb-0">Historial médico</h1>
+    <a class="btn btn-outline-secondary" href="/app/paciente">Volver al panel</a>
+  </div>
+
+  <div class="card shadow-sm">
+    <div class="card-body">
+      <p class="text-muted mb-4">Resumen de tus registros clínicos recientes.</p>
+
+      @if (Model.RecentRecords.Count == 0)
+      {
+        <div class="alert alert-light border mb-0">Aún no tienes registros clínicos disponibles.</div>
+      }
+      else
+      {
+        <div class="table-responsive">
+          <table class="table table-striped align-middle mb-0">
+            <thead>
+              <tr>
+                <th>Fecha</th>
+                <th>Diagnóstico</th>
+                <th>Tratamiento</th>
+                <th>Estado</th>
+              </tr>
+            </thead>
+            <tbody>
+              @foreach (var r in Model.RecentRecords)
+              {
+                <tr>
+                  <td>@r.CreatedAt.ToLocalTime().ToString("g")</td>
+                  <td>@r.Diagnosis</td>
+                  <td>@r.Treatment</td>
+                  <td>
+                    @if (r.IsClosed)
+                    {
+                      <span class="badge text-bg-success">Cerrado</span>
+                    }
+                    else
+                    {
+                      <span class="badge text-bg-warning">Abierto</span>
+                    }
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      }
+    </div>
+  </div>
+</div>
