@@ -1,0 +1,24 @@
+services:
+  # 1. Tu API de .NET
+  - type: web
+    name: clinicaCavero
+    runtime: docker
+    repo: https://github.com/mariaquispecc/caveroSalud-Digital # <-- CAMBIA ESTO CON TU URL DE GITHUB
+    plan: free
+    region: Virginia 
+    envVars:
+      - key: ASPNETCORE_ENVIRONMENT
+        value: Production
+      # Conexión automática: Toma los datos de la base de datos creada abajo
+      - key: ConnectionStrings__DefaultConnection
+        fromDatabase:
+          name: caverosalud-db
+          property: connectionString
+
+# 2. Tu Base de Datos Postgres en la nube
+databases:
+  - name: caverosaludBD
+    databaseName: cavero
+    user: postgres
+    plan: free
+    region: Virginia 

@@ -1,26 +1,53 @@
 version: '3.8'
 
 services:
-  # 1. Tu API de .NET
-  - type: web
-    name: caverosalud-api
-    runtime: docker
-    repo: https://github.com/mariaquispecc/caveroSalud-Digital
-    plan: free
-    region: virginia
-    envVars:
-      - key: ASPNETCORE_ENVIRONMENT
-        value: Production
-      # Conexión automática: Toma los datos de la base de datos creada abajo
-      - key: ConnectionStrings__DefaultConnection
-        fromDatabase:
-          name: caverosalud-db
-          property: connectionString
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: cavero_api
+    restart: unless-stopped
+    ports:
+      - "5000:5000"
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
 
-# 2. Tu Base de Datos Postgres en la nube
-databases:
-  - name: caverosalud-db
-    databaseName: cavero
-    user: postgres
-    plan: free
-    region: virginia
+  db:
+    image: postgres:16-alpine
+    container_name: cavero_postgres_dev
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+      POSTGRES_DB: ${POSTGRES_DB:-cavero}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 5s
+
+  pgadmin:
+    image: dpage/pgadmin4:8
+    container_name: cavero_pgadmin
+    restart: unless-stopped
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-admin@5432}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-admin}
+    ports:
+      - "${PGADMIN_PORT:-8080}:80"
+    depends_on:
+      - db
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+
+volumes:
+  pgdata:
+  pgadmin_data:
