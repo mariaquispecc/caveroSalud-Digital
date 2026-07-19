@@ -12,11 +12,11 @@ services:
         value: http://0.0.0.0:$PORT
       - key: ConnectionStrings__DefaultConnection
         fromDatabase:
-          name: caverosaludbd
+          name: clinica-cavero-db
           property: connectionString
       - key: ConnectionStrings__Default
         fromDatabase:
-          name: caverosaludbd
+          name: clinica-cavero-db
           property: connectionString
       - key: Admin__Email
         value: admin@cavero.local
