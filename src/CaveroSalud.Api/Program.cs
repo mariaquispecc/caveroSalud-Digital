@@ -7,12 +7,46 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
+var port = Environment.GetEnvironmentVariable("PORT");
+if (!string.IsNullOrWhiteSpace(port))
+{
+    builder.WebHost.UseUrls($"http://0.0.0.0:{port}");
+}
+
 // Configuration
 builder.Services.Configure<SmtpOptions>(builder.Configuration.GetSection("Smtp"));
 
+var allowedOrigins = builder.Configuration.GetSection("Cors:AllowedOrigins").Get<string[]>() ?? Array.Empty<string>();
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("Default", policy =>
+    {
+        if (allowedOrigins.Length > 0)
+        {
+            policy.WithOrigins(allowedOrigins)
+                .AllowAnyHeader()
+                .AllowAnyMethod();
+        }
+        else
+        {
+            policy.AllowAnyOrigin()
+                .AllowAnyHeader()
+                .AllowAnyMethod();
+        }
+    });
+});
+
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
+    ?? builder.Configuration.GetConnectionString("Default");
+
+if (string.IsNullOrWhiteSpace(connectionString))
+{
+    throw new InvalidOperationException("No database connection string was found. Set ConnectionStrings__DefaultConnection or ConnectionStrings__Default.");
+}
+
 // DbContext
 builder.Services.AddDbContext<CaveroDbContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("Default")));
+    options.UseNpgsql(connectionString));
 
 // Identity
 builder.Services.AddIdentity<ApplicationUser, IdentityRole<Guid>>(options =>
@@ -47,6 +81,9 @@ using (var scope = app.Services.CreateScope())
     var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole<Guid>>>();
     var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
     var db = scope.ServiceProvider.GetRequiredService<CaveroDbContext>();
+
+    await db.Database.MigrateAsync();
+    logger.LogInformation("Database migrations applied successfully.");
 
     var roles = new[] { "Paciente", "Médico", "Laboratorista", "Farmacéutico", "Administrador" };
     foreach (var r in roles)
@@ -122,6 +159,7 @@ app.UseRouting();
 // Serve static files from wwwroot (public pages)
 app.UseStaticFiles();
 
+app.UseCors("Default");
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();

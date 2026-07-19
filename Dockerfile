@@ -12,6 +12,4 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0
 WORKDIR /app
 COPY --from=build-env /app/out .
 
-ENV ASPNETCORE_URLS=http://+:${PORT:-5000}
-
 ENTRYPOINT ["dotnet", "CaveroSalud.Api.dll"]

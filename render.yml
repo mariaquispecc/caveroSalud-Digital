@@ -1,23 +1,39 @@
 services:
-  # 1. Tu API de .NET
   - type: web
-    name: clinicaCavero
+    name: clinica-cavero-api
     runtime: docker
     plan: free
-    region: Virginia 
+    region: virginia
+    dockerCommand: "dotnet CaveroSalud.Api.dll"
     envVars:
       - key: ASPNETCORE_ENVIRONMENT
         value: Production
-      # Conexión automática: Toma los datos de la base de datos creada abajo
+      - key: ASPNETCORE_URLS
+        value: http://0.0.0.0:$PORT
       - key: ConnectionStrings__DefaultConnection
         fromDatabase:
-          name: caverosaludBD
+          name: caverosaludbd
           property: connectionString
+      - key: ConnectionStrings__Default
+        fromDatabase:
+          name: caverosaludbd
+          property: connectionString
+      - key: Admin__Email
+        value: admin@cavero.local
+      - key: Admin__Password
+        value: Admin123!
 
-# 2. Tu Base de Datos Postgres en la nube
+  - type: pserv
+    name: clinica-cavero-db
+    plan: free
+    region: virginia
+    databaseName: caverosaludbd
+    user: postgres
+
+# Render no necesita un bloque databases cuando usas pserv; mantengo el nombre para compatibilidad con el servicio anterior.
 databases:
-  - name: caverosaludBD
-    databaseName: cavero
+  - name: caverosaludbd
+    databaseName: caverosaludbd
     user: postgres
     plan: free
-    region: Virginia 
+    region: virginia

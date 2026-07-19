@@ -13,7 +13,10 @@ services:
       db:
         condition: service_healthy
     environment:
-      - ASPNETCORE_ENVIRONMENT=Development
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_URLS: http://+:5000
+      ConnectionStrings__Default: ${CONNECTIONSTRINGS__DEFAULT:-Host=db;Port=5432;Database=${POSTGRES_DB:-caverosaludbd};Username=${POSTGRES_USER:-postgres};Password=${POSTGRES_PASSWORD:-postgres}}
+      ConnectionStrings__DefaultConnection: ${CONNECTIONSTRINGS__DEFAULTCONNECTION:-Host=db;Port=5432;Database=${POSTGRES_DB:-caverosaludbd};Username=${POSTGRES_USER:-postgres};Password=${POSTGRES_PASSWORD:-postgres}}
 
   db:
     image: postgres:16-alpine
@@ -22,13 +25,13 @@ services:
     environment:
       POSTGRES_USER: ${POSTGRES_USER:-postgres}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
-      POSTGRES_DB: ${POSTGRES_DB:-cavero}
+      POSTGRES_DB: ${POSTGRES_DB:-caverosaludbd}
     volumes:
       - pgdata:/var/lib/postgresql/data
     ports:
       - "${POSTGRES_PORT:-5432}:5432"
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres}"]
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres} -d ${POSTGRES_DB:-caverosaludbd}"]
       interval: 10s
       timeout: 5s
       retries: 5
