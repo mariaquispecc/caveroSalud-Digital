@@ -65,7 +65,7 @@ namespace CaveroSalud.Api.Pages.App
             if (user == null)
             {
                 ErrorMessage = "No se pudo identificar al usuario actual.";
-                return RedirectToPage();
+                return Page();
             }
 
             if (string.IsNullOrWhiteSpace(Account.FullName) || string.IsNullOrWhiteSpace(Account.Email))
@@ -157,7 +157,7 @@ namespace CaveroSalud.Api.Pages.App
 
             await LoadAsync(user);
             StatusMessage = "Tu cuenta se actualizó correctamente.";
-            return RedirectToPage("/app/paciente");
+            return Page();
         }
 
         public async Task<IActionResult> OnPostViewNotificationAsync(Guid id)
