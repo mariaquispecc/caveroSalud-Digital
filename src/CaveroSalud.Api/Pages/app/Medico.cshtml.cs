@@ -282,7 +282,7 @@ namespace CaveroSalud.Api.Pages.App
 
             StatusMessage = "Tu cuenta se actualizó correctamente.";
             await LoadAsync(user);
-            return Page();
+            return RedirectToPage("/app/medico");
         }
 
         public async Task<IActionResult> OnPostViewNotificationAsync(Guid id)
