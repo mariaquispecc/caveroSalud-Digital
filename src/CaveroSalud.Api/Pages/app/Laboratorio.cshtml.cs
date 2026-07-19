@@ -280,8 +280,9 @@ namespace CaveroSalud.Api.Pages.App
                 return Page();
             }
 
+            await _db.SaveChangesAsync();
             StatusMessage = "Tu cuenta se actualizó correctamente.";
-            return RedirectToPage();
+            return RedirectToPage("/app/laboratorio");
         }
 
         private async Task LoadAsync(ApplicationUser? currentUser = null)

@@ -161,7 +161,8 @@ namespace CaveroSalud.Api.Pages.App
             }
 
             SuccessMessage = "Tu cuenta se actualizó correctamente.";
-            return RedirectToPage();
+            await _db.SaveChangesAsync();
+            return RedirectToPage("/app/farmacia");
         }
 
         public async Task<IActionResult> OnPostViewNotificationAsync(Guid id)
@@ -188,7 +189,7 @@ namespace CaveroSalud.Api.Pages.App
                 await _db.SaveChangesAsync();
             }
 
-            return RedirectToPage();
+            return RedirectToPage("/app/farmacia");
         }
 
         private async Task LoadDashboardDataAsync()
