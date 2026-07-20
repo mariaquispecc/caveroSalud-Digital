@@ -94,7 +94,7 @@ namespace CaveroSalud.Api.Pages.App
             if (!update.Succeeded)
             {
                 ErrorMessage = string.Join("; ", update.Errors.Select(e => e.Description));
-                await LoadAsync(user);
+                await LoadAsync();
                 return Page();
             }
 
@@ -157,7 +157,7 @@ namespace CaveroSalud.Api.Pages.App
 
             await LoadAsync(user);
             StatusMessage = "Tu cuenta se actualizó correctamente.";
-            return Page();
+            return RedirectToPage(new { editId = (Guid?)null });
         }
 
         public async Task<IActionResult> OnPostViewNotificationAsync(Guid id)

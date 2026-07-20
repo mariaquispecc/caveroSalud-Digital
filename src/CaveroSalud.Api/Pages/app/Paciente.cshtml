@@ -12,6 +12,10 @@
   {
     <div class="alert alert-danger" role="alert">@Model.ErrorMessage</div>
   }
+  @if (!string.IsNullOrEmpty(TempData["StatusMessage"] as string))
+{
+    <div class="alert alert-success">@TempData["StatusMessage"]</div>
+  }
   @if (!string.IsNullOrWhiteSpace(Model.NotificationDetailTitle))
   {
     <div class="alert alert-info" role="alert">
