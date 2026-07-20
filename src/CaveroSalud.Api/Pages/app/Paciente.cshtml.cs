@@ -65,7 +65,7 @@ namespace CaveroSalud.Api.Pages.App
             if (user == null)
             {
                 ErrorMessage = "No se pudo identificar al usuario actual.";
-               return RedirectToPage();
+                return Page();
             }
 
             if (string.IsNullOrWhiteSpace(Account.FullName) || string.IsNullOrWhiteSpace(Account.Email))
@@ -135,7 +135,6 @@ namespace CaveroSalud.Api.Pages.App
                     return Page();
                 }
 
-                // Explicitly update and save the user to persist the password change
                 var updateResult = await _userManager.UpdateAsync(user);
                 if (!updateResult.Succeeded)
                 {
@@ -144,21 +143,19 @@ namespace CaveroSalud.Api.Pages.App
                     return Page();
                 }
 
-                // Force save to database
                 try
                 {
                     await _db.SaveChangesAsync();
                 }
                 catch
                 {
-                    // SaveChanges might fail if there are no tracked changes, but the password change should still be persisted
+                    // Puede fallar si no hay cambios pendientes, pero la contraseña ya se actualizó
                 }
             }
 
-            
             StatusMessage = "Tu cuenta se actualizó correctamente.";
             await LoadAsync(user);
-            return RedirectToPage("/app/paciente");
+            return Page(); // <-- aquí está el cambio
         }
 
         public async Task<IActionResult> OnPostViewNotificationAsync(Guid id)

@@ -39,6 +39,9 @@ namespace CaveroSalud.Api.Pages.App
         public string? SuccessMessage { get; set; }
 
         [TempData]
+        public string? StatusMessage { get; set; }
+
+        [TempData]
         public string? ErrorMessage { get; set; }
 
         [TempData]
@@ -160,8 +163,66 @@ namespace CaveroSalud.Api.Pages.App
                 return Page();
             }
 
-            SuccessMessage = "Tu cuenta se actualizó correctamente.";
             await _db.SaveChangesAsync();
+            
+            var currentPassword = Request.Form["Account.CurrentPassword"].ToString();
+            var newPassword = Request.Form["Account.NewPassword"].ToString();
+            var confirmPassword = Request.Form["Account.ConfirmPassword"].ToString();
+
+            if (!string.IsNullOrWhiteSpace(newPassword) || !string.IsNullOrWhiteSpace(currentPassword) || !string.IsNullOrWhiteSpace(confirmPassword))
+            {
+                if (string.IsNullOrWhiteSpace(currentPassword) || string.IsNullOrWhiteSpace(newPassword) || string.IsNullOrWhiteSpace(confirmPassword))
+                {
+                    ErrorMessage = "Para cambiar la contraseña debes completar la actual, la nueva y la confirmación.";
+                    await LoadDashboardDataAsync();
+                    return Page();
+                }
+
+                if (newPassword != confirmPassword)
+                {
+                    ErrorMessage = "La nueva contraseña y la confirmación no coinciden.";
+                    await LoadDashboardDataAsync();
+                    return Page();
+                }
+
+                if (!await _userManager.CheckPasswordAsync(user, currentPassword))
+                {
+                    ErrorMessage = "La contraseña actual no es correcta.";
+                    await LoadDashboardDataAsync();
+                    return Page();
+                }
+
+                var changePasswordResult = await _userManager.ChangePasswordAsync(user, currentPassword, newPassword);
+                if (!changePasswordResult.Succeeded)
+                {
+                    ErrorMessage = string.Join("; ", changePasswordResult.Errors.Select(e => e.Description));
+                    await LoadDashboardDataAsync();
+                    return Page();
+                }
+
+                // Explicitly update and save the user to persist the password change
+                var updateResult = await _userManager.UpdateAsync(user);
+                if (!updateResult.Succeeded)
+                {
+                    ErrorMessage = string.Join("; ", updateResult.Errors.Select(e => e.Description));
+                    await LoadDashboardDataAsync();
+                    return Page();
+                }
+
+                // Force save to database
+                try
+                {
+                    await _db.SaveChangesAsync();
+                }
+                catch
+                {
+                    // SaveChanges might fail if there are no tracked changes, but the password change should still be persisted
+                }
+            }
+
+            
+            StatusMessage = "Tu cuenta se actualizó correctamente.";
+            await LoadDashboardDataAsync();    
             return RedirectToPage("/app/farmacia");
         }
 
@@ -354,6 +415,9 @@ namespace CaveroSalud.Api.Pages.App
             public string Email { get; set; } = string.Empty;
             public string Phone { get; set; } = string.Empty;
             public string Dni { get; set; } = string.Empty;
+            public string CurrentPassword { get; set; } = string.Empty;
+            public string NewPassword { get; set; } = string.Empty;
+            public string ConfirmPassword { get; set; } = string.Empty;
         }
     }
 }
