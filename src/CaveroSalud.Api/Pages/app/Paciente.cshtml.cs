@@ -58,20 +58,20 @@ namespace CaveroSalud.Api.Pages.App
         {
             await LoadAsync();
         }
-
+    
         public async Task<IActionResult> OnPostUpdateAccountAsync()
         {
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
                 ErrorMessage = "No se pudo identificar al usuario actual.";
-                return Page();
+                return RedirectToPage();
             }
 
             if (string.IsNullOrWhiteSpace(Account.FullName) || string.IsNullOrWhiteSpace(Account.Email))
             {
                 ErrorMessage = "Nombre y correo son obligatorios.";
-                await LoadAsync(user);
+                await LoadAsync();
                 return Page();
             }
 
@@ -80,7 +80,7 @@ namespace CaveroSalud.Api.Pages.App
             if (owner != null && owner.Id != user.Id)
             {
                 ErrorMessage = "El correo ya está en uso por otro usuario.";
-                await LoadAsync(user);
+                await LoadAsync();
                 return Page();
             }
 
@@ -94,12 +94,12 @@ namespace CaveroSalud.Api.Pages.App
             if (!result.Succeeded)
             {
                 ErrorMessage = string.Join("; ", result.Errors.Select(e => e.Description));
-                await LoadAsync(user);
+                await LoadAsync();
                 return Page();
             }
 
             await _db.SaveChangesAsync();
-
+            
             var currentPassword = Request.Form["Account.CurrentPassword"].ToString();
             var newPassword = Request.Form["Account.NewPassword"].ToString();
             var confirmPassword = Request.Form["Account.ConfirmPassword"].ToString();
@@ -109,21 +109,21 @@ namespace CaveroSalud.Api.Pages.App
                 if (string.IsNullOrWhiteSpace(currentPassword) || string.IsNullOrWhiteSpace(newPassword) || string.IsNullOrWhiteSpace(confirmPassword))
                 {
                     ErrorMessage = "Para cambiar la contraseña debes completar la actual, la nueva y la confirmación.";
-                    await LoadAsync(user);
+                    await LoadAsync();
                     return Page();
                 }
 
                 if (newPassword != confirmPassword)
                 {
                     ErrorMessage = "La nueva contraseña y la confirmación no coinciden.";
-                    await LoadAsync(user);
+                    await LoadAsync();
                     return Page();
                 }
 
                 if (!await _userManager.CheckPasswordAsync(user, currentPassword))
                 {
                     ErrorMessage = "La contraseña actual no es correcta.";
-                    await LoadAsync(user);
+                    await LoadAsync();
                     return Page();
                 }
 
@@ -131,31 +131,34 @@ namespace CaveroSalud.Api.Pages.App
                 if (!changePasswordResult.Succeeded)
                 {
                     ErrorMessage = string.Join("; ", changePasswordResult.Errors.Select(e => e.Description));
-                    await LoadAsync(user);
+                    await LoadAsync();
                     return Page();
                 }
 
+                // Explicitly update and save the user to persist the password change
                 var updateResult = await _userManager.UpdateAsync(user);
                 if (!updateResult.Succeeded)
                 {
                     ErrorMessage = string.Join("; ", updateResult.Errors.Select(e => e.Description));
-                    await LoadAsync(user);
+                    await LoadAsync();
                     return Page();
                 }
 
+                // Force save to database
                 try
                 {
                     await _db.SaveChangesAsync();
                 }
                 catch
                 {
-                    // Puede fallar si no hay cambios pendientes, pero la contraseña ya se actualizó
+                    // SaveChanges might fail if there are no tracked changes, but the password change should still be persisted
                 }
             }
 
+            
             StatusMessage = "Tu cuenta se actualizó correctamente.";
-            await LoadAsync(user);
-            return Page(); // <-- aquí está el cambio
+            await LoadAsync();    
+            return RedirectToPage("/app/paciente");
         }
 
         public async Task<IActionResult> OnPostViewNotificationAsync(Guid id)
