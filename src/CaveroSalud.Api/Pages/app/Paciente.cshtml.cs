@@ -110,7 +110,7 @@ namespace CaveroSalud.Api.Pages.App
                 {
                     ErrorMessage = "Para cambiar la contraseña debes completar la actual, la nueva y la confirmación.";
                     await LoadAsync(user);
-                    return Page();
+                    return RedirectToPage("/app/paciente");
                 }
 
                 if (newPassword != confirmPassword)
