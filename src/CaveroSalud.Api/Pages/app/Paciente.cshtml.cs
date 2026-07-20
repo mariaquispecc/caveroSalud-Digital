@@ -65,7 +65,7 @@ namespace CaveroSalud.Api.Pages.App
             if (user == null)
             {
                 ErrorMessage = "No se pudo identificar al usuario actual.";
-                return Page();
+               return RedirectToPage();
             }
 
             if (string.IsNullOrWhiteSpace(Account.FullName) || string.IsNullOrWhiteSpace(Account.Email))
@@ -110,7 +110,7 @@ namespace CaveroSalud.Api.Pages.App
                 {
                     ErrorMessage = "Para cambiar la contraseña debes completar la actual, la nueva y la confirmación.";
                     await LoadAsync(user);
-                    return RedirectToPage("/app/paciente");
+                    return Page();
                 }
 
                 if (newPassword != confirmPassword)

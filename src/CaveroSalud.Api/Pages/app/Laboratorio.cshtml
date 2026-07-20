@@ -93,6 +93,18 @@
             <label asp-for="Account.Dni" class="form-label">DNI</label>
             <input asp-for="Account.Dni" class="form-control" />
           </div>
+          <div>
+            <label asp-for="Account.CurrentPassword" class="form-label">Contraseña actual</label>
+            <input asp-for="Account.CurrentPassword" type="password" class="form-control" placeholder="Déjala vacía si no deseas cambiarla" />
+          </div>
+          <div>
+            <label asp-for="Account.NewPassword" class="form-label">Nueva contraseña</label>
+            <input asp-for="Account.NewPassword" type="password" class="form-control" />
+          </div>
+          <div>
+            <label asp-for="Account.ConfirmPassword" class="form-label">Confirmar nueva contraseña</label>
+            <input asp-for="Account.ConfirmPassword" type="password" class="form-control" />
+          </div>
           <button type="submit" class="btn btn-outline-primary">Guardar cambios</button>
         </form>
       </div>
