@@ -76,8 +76,8 @@ namespace CaveroSalud.Api.Pages.App
             }
 
             var normalizedEmail = Account.Email.Trim();
-            var emailOwner = await _userManager.FindByEmailAsync(normalizedEmail);
-            if (emailOwner != null && emailOwner.Id != user.Id)
+            var owner = await _userManager.FindByEmailAsync(normalizedEmail);
+            if (owner != null && owner.Id != user.Id)
             {
                 ErrorMessage = "El correo ya está en uso por otro usuario.";
                 await LoadAsync(user);
@@ -90,11 +90,11 @@ namespace CaveroSalud.Api.Pages.App
             user.PhoneNumber = Account.Phone.Trim();
             user.Dni = Account.Dni.Trim();
 
-            var update = await _userManager.UpdateAsync(user);
-            if (!update.Succeeded)
+            var result = await _userManager.UpdateAsync(user);
+            if (!result.Succeeded)
             {
-                ErrorMessage = string.Join("; ", update.Errors.Select(e => e.Description));
-                await LoadAsync();
+                ErrorMessage = string.Join("; ", result.Errors.Select(e => e.Description));
+                await LoadAsync(user);
                 return Page();
             }
 
@@ -155,9 +155,10 @@ namespace CaveroSalud.Api.Pages.App
                 }
             }
 
-            await LoadAsync(user);
+            
             StatusMessage = "Tu cuenta se actualizó correctamente.";
-            return RedirectToPage(new { editId = (Guid?)null });
+            await LoadAsync(user);
+            return RedirectToPage("/app/paciente");
         }
 
         public async Task<IActionResult> OnPostViewNotificationAsync(Guid id)
